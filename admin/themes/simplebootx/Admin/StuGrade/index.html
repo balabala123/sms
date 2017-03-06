@@ -1,0 +1,43 @@
+<admintpl file="header" />
+
+<style>
+    .stu_msg{
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:U('StuGrade/index')}">成绩中心</a></li>
+    </ul>
+    <table  style="width:650px;text-align: center;color: #000;" class="table table-hover table-bordered table-list">
+        <tr>
+            <th style="width:400px;height:50px;" class="stu_msg">课程名称</th>
+            <th style="width:150px;height:50px;" class="stu_msg">成绩</th>
+            <th style="width:100px;height:50px;" class="stu_msg">绩点/学分</th>
+        </tr>
+        <foreach name="data" item="vo">
+            <tr style="height:40px;">
+                <td >{$vo.subject_name}</td>
+
+                <if condition="$vo['grade'] lt 60">
+                    <td style="color:red;">{$vo.grade}</td>
+                    <else />
+                    <td>{$vo.grade}</td>
+                </if>
+                <if condition="$vo['jidian'] eq 0">
+                    <td><span style="color:orange;">{$vo.jidian}</span>/{$vo.score}</td>
+                    <else />
+                    <td>{$vo.jidian}/{$vo.score}</td>
+                </if>
+            </tr>
+
+        </foreach>
+
+    </table>
+    <div class="pagination">{$page}</div>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

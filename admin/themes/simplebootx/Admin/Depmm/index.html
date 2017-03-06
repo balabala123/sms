@@ -1,0 +1,403 @@
+<admintpl file="header"/>
+    <style>
+        body{
+            margin-top:3%;
+            margin-left:15%;
+        }
+        #add_dep,#add_xi,#up_dep,#up_xi{
+            color: white;
+            background-color: RGBa(0,0,0,0.2);
+            display: none;
+            border-radius:30px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+    </style>
+<body>
+    <table>
+        <tr>
+            <td><button class="btn btn-primary" id="xi_add">添加院系</button>
+                <div id="add_xi">
+                    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Depmm/add_xi')}">
+                        <p><b>请填写院系名称：</b><input type="text" name="name" id="ipt_xi" required ></p>
+                        <center> <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button></center>
+                    </form>
+                </div>
+            </td>
+            <td><button id="dep_add" class="btn btn-primary">添加专业</button>
+                <div id="add_dep">
+                    <p>请填写专业名称：<input type="text" name="name" class="form-control" id="fname" required ></p>
+                    <input type="button" value="提交" id="submit" class="btn btn-primary">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select style="width: 223px;" name="stu_xi" id="xi"  onchange="change()">
+                    <option disabled selected>--请选择院系--</option>
+                    <volist name="xi" id="vo">
+                        <option value="{$vo.xi_id}">{$vo.xi_name}</option>
+                    </volist>
+                </select>
+            </td>
+            <td>
+                <select name="depart" class="ft" id="depart">
+                    <option selected disabled>---专业---</option>
+                </select>
+            </td>
+            <td>
+                <select name="lable" class="ft" id="class">
+                    <option disabled selected>---班级---</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button class="btn btn-primary" id="xi_up">修改院系名称</button>
+                <div id="up_xi">
+                    <p>请填写院系名称：<input type="text" name="name" class="form-control" id="up_xi_name" required ></p>
+                    <center><input type="button" value="提交" id="sub_xi_up" class="btn btn-primary"></center>
+                </div>
+            </td>
+            <td>
+                <button id="dep_up" class="btn btn-primary">修改专业名称</button>
+                <div id="up_dep">
+                    <p>请填写专业名称：<input type="text" name="name" class="form-control" id="upname" required ></p>
+                    <center><input type="button" value="提交" id="sub_up" class="btn btn-primary"></center>
+                </div>
+            </td>
+            <td>
+                <button id="add_class" class="btn btn-primary">添加班级</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="del_xi" class="btn btn-primary">删除院系</button>
+            </td>
+            <td>
+                <button id="del_dep" class="btn btn-primary">删除专业</button>
+            </td>
+            <td>
+                <button id="del_class" class="btn btn-primary">删除班级</button>
+            </td>
+        </tr>
+    </table>
+</body>
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    <script src="__PUBLIC__/Js/progress-bar/src/jquery.velocity.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Js/ajax.js"></script>
+    <script>
+
+        xi_id = $("#xi").val();
+        if(xi_id != '--请选择院系--') {
+            $("#depart").text(" ");
+            $.ajax({
+                       type: "POST",
+                       url: "{:U('Stumm/change')}",
+                       dataType: "json",
+                       data: {
+                           'xi_id': xi_id
+                       },
+                       success: function (data) {
+                           delete data['state'];
+                           delete data['referer'];
+                           $.each(data, function (name, value) {
+                               var depart_name = value.depart_name;
+                               var depart_id = value.depart_id;
+                               $("#depart").append("<option value='" + depart_id + "'>" + depart_name + "</option>");
+                           })
+                           depart_id = $("#depart").val();
+                           $("#class").text(" ");
+                           $.ajax({
+                                      type: "POST",
+                                      url: "{:U('Stumm/change_two')}",
+                                      dataType: "json",
+                                      data: {
+                                          'depart_id': depart_id
+                                      },
+                                      success: function (data) {
+                                          delete data['state'];
+                                          delete data['referer'];
+                                          $.each(data, function (name, value) {
+                                              var class_no = value.class_no;
+                                              var class_id = value.class_id;
+                                              $("#class").append("<option value='" + class_id + "'>" + class_no + "</option>");
+                                          })
+                                      }
+                                  }).responseText;
+                       }
+                   }).responseText;
+        }
+        //三级联动
+        $("#xi").on("change",function(){
+            xi_id = $("#xi").val();
+            $("#depart").text(" ");
+            $.ajax({
+                       type: "POST",
+                       url:"{:U('Stumm/change')}",
+                       dataType:"json",
+                       data: {
+                           'xi_id': xi_id
+                       },
+                       success: function(data){
+                           delete data['state'];
+                           delete data['referer'];
+                           $.each(data,function(name,value){
+                               var depart_name = value.depart_name;
+                               var depart_id = value.depart_id;
+                               $("#depart").append("<option value='"+depart_id+"'>" + depart_name + "</option>");
+                           })
+                           depart_id = $("#depart").val();
+                           $("#class").text(" ");
+                           $.ajax({
+                                      type: "POST",
+                                      url:"{:U('Stumm/change_two')}",
+                                      dataType:"json",
+                                      data: {
+                                          'depart_id': depart_id
+                                      },
+                                      success: function(data){
+                                          delete data['state'];
+                                          delete data['referer'];
+                                          $.each(data,function(name,value){
+                                              var class_no = value.class_no;
+                                              var class_id = value.class_id;
+                                              $("#class").append("<option value='"+class_id+"'>" + class_no + "</option>");
+                                          })
+                                      }
+                                  }).responseText;
+                       }
+                   }).responseText;
+        })
+
+        //三级联动2
+        $("#depart").on("change",function(){
+            depart_id = $("#depart").val();
+            $("#class").text(" ");
+            $.ajax({
+                       type: "POST",
+                       url:"{:U('Stumm/change_two')}",
+                       dataType:"json",
+                       data: {
+                           'depart_id': depart_id
+                       },
+                       success: function(data){
+                           delete data['state'];
+                           delete data['referer'];
+                           $.each(data,function(name,value){
+                               var class_no = value.class_no;
+                               var class_id = value.class_id;
+                               $("#class").append("<option value='"+class_id+"'>" + class_no + "</option>");
+                           })
+                       }
+                   }).responseText;
+        })
+
+        $("#xi_add").click(function(){
+            $("#add_xi").slideToggle("slow");
+        })
+
+        $("#xi_up").click(function(){
+            xi_id = $("#xi").val();
+            if (xi_id == "--请选择院系--") {
+                alert('请选择院系');
+            }else {
+                $("#up_xi").slideToggle("slow");
+            }
+        })
+
+        $("#dep_add").click(function(){
+            xi_id = $("#xi").val();
+            if (xi_id == "--请选择院系--") {
+                alert('请选择院系');
+            }else{
+                $("#add_dep").slideToggle("slow");
+            }
+        })
+
+        $("#dep_up").click(function(){
+            $("#up_dep").slideToggle("slow");
+        })
+
+//修改院系
+        $('#sub_xi_up').click(function() {
+            xi_id = $("#xi").val();
+            if (xi_id == "--请选择院系--") {
+                alert('请选择院系');
+            }else {
+                xi_name = $('#up_xi_name').val();
+                $.ajax({
+                           type: "POST",
+                           url: "{:U('Depmm/up_xi')}",
+                           dataType: "json",
+                           data: {
+                               'xi_id': xi_id,
+                               'xi_name': xi_name,
+                           },
+                           success: function (data) {
+                               if (data.info == '修改成功') {
+                                   $("#up_xi").slideUp("slow");
+                                   alert(data.info);
+                                   location.reload();
+                               } else {
+                                   alert(data.info);
+                               }
+                           }
+                       }).responseText;
+            }
+        })
+
+        //删除院系
+        $('#del_xi').click(function() {
+            xi_id = $("#xi").val();
+            if (xi_id == "--请选择院系--") {
+                alert('请选择院系');
+            }else {
+                $.ajax({
+                           type: "POST",
+                           url: "{:U('Depmm/del_xi')}",
+                           dataType: "json",
+                           data: {
+                               'xi_id': xi_id,
+                           },
+                           success: function (data) {
+                               alert(data.info);
+                               if (data.info == '删除成功') {
+                                   location.reload();
+                               }
+                           }
+                       }).responseText;
+            }
+        })
+
+        //添加专业
+        $('#submit').click(function() {
+            xi_id = $("#xi").val();
+            if (xi_id == "--请选择院系--") {
+                alert('请选择院系');
+            }else{
+                name = $('#fname').val();
+                if(name == '') {
+                    alert('请填写专业名称');
+                }else{
+                    $.ajax({
+                               type: "POST",
+                               url: "{:U('Depmm/add_dep')}",
+                               dataType: "json",
+                               data: {
+                                   'xi_id': xi_id,
+                                   'dep_name':name,
+                               },
+                               success: function (data) {
+                                   alert(data.info);
+                                   if (data.info == '添加成功') {
+                                       location.reload();
+                                   }
+                               }
+                           }).responseText;
+                }
+            }
+        })
+
+        //修改专业
+        $('#sub_up').click(function() {
+            dep_id = $("#depart").val();
+            if (dep_id == "--请选择专业--") {
+                alert('请选择专业');
+            }else {
+                dep_name = $('#upname').val();
+                $.ajax({
+                           type: "POST",
+                           url: "{:U('Depmm/up_dep')}",
+                           dataType: "json",
+                           data: {
+                               'dep_id': dep_id,
+                               'dep_name': dep_name,
+                           },
+                           success: function (data) {
+                               if (data.info == '修改成功') {
+                                   $("#up_xi").slideUp("slow");
+                                   alert(data.info);
+                                   location.reload();
+                               } else {
+                                   alert(data.info);
+                               }
+                           }
+                       }).responseText;
+            }
+        })
+        //删除院系
+        $('#del_dep').click(function() {
+            dep_id = $("#depart").val();
+            if (dep_id == "--请选择专业--") {
+                alert('请选择专业');
+            }else {
+                $.ajax({
+                           type: "POST",
+                           url: "{:U('Depmm/del_dep')}",
+                           dataType: "json",
+                           data: {
+                               'dep_id': dep_id,
+                           },
+                           success: function (data) {
+                               alert(data.info);
+                               if (data.info == '删除成功') {
+                                   location.reload();
+                               }
+                           }
+                       }).responseText;
+            }
+        })
+
+        //添加院系
+        $('#add_class').click(function() {
+            dep_id = $("#depart").val();
+            if (dep_id == "--请选择专业--") {
+                alert('请选择专业');
+            }else {
+                $.ajax({
+                           type: "POST",
+                           url: "{:U('Depmm/add_class')}",
+                           dataType: "json",
+                           data: {
+                               'dep_id': dep_id,
+                           },
+                           success: function (data) {
+                               alert(data.info);
+                               if (data.info == '添加成功') {
+                                   location.reload();
+                               }
+                           }
+                       }).responseText;
+            }
+        })
+
+
+        //删除班级
+        $('#del_class').click(function() {
+            dep_id = $("#depart").val();
+            if (dep_id == "--请选择专业--") {
+                alert('请选择专业');
+            }else {
+                $.ajax({
+                           type: "POST",
+                           url: "{:U('Depmm/del_class')}",
+                           dataType: "json",
+                           data: {
+                               'dep_id': dep_id,
+                           },
+                           success: function (data) {
+                               alert(data.info);
+                               if (data.info == '删除成功') {
+                                   location.reload();
+                               }
+                           }
+                       }).responseText;
+            }
+        })
+    </script>
+
+
+
+
+

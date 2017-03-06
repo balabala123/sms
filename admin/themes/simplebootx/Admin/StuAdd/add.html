@@ -1,0 +1,61 @@
+<admintpl file="header" />
+
+<style>
+    .thtd{
+        width:150px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .form-required{
+        color:red;
+    }
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:U('StuAdd/index')}">加分项申请表</a></li>
+        <li class="active"><a href="{:U('StuAdd/add')}">申请加分</a></li>
+    </ul>
+    <form method="post" class="js-ajax-form" action="{:U('StuAdd/add_post')}">
+        <table   class="table table-hover table-bordered table-list">
+            <tr>
+                <td class="thtd">加分项类型</td>
+                <td>
+                    <select name="type_name" >
+                        <option>请选择</option>
+                        <foreach name="type" item="vo">
+                            <option>{$vo}</option>
+                        </foreach>
+                        <!--<option>其他(请在备注中说明)</option>-->
+                    </select>
+                    <span class="form-required">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="thtd">开始时间</td>
+                <td><input type="text" name="start_time" value="{:date('Y-m-d H:i:s',time())}" class="js-datetime"></td>
+            </tr>
+            <tr>
+                <td class="thtd">结束时间</td>
+                <td><input type="text" name="end_time" value="{:date('Y-m-d H:i:s',time())}" class="js-datetime"></td>
+            </tr>
+            <tr >
+                <td class="thtd">成果</td>
+                <td><textarea style="height:50px" name="add_res"></textarea></td>
+            </tr>
+            <tr>
+                <td class="thtd">备注信息</td>
+                <td><textarea  name="add_note"></textarea></td>
+            </tr>
+
+        </table>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">提交</button>
+            <a class="btn" href="javascript:history.back(-1);">返回</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

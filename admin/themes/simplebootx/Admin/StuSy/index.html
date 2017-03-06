@@ -1,0 +1,119 @@
+<admintpl file="header" />
+
+<style>
+
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:U('StuSy/index')}">助学金申请记录</a></li>
+        <li ><a href="{:U('StuSy/add')}">申请</a></li>
+    </ul>
+    <form class="well form-search" method="post" action="{:U('StuSy/index')}">
+        助学金类型:
+        <input type="text" name="type_name" style="width: 120px;" value="{:I('request.type_name/s','')}" >
+        <input type="submit" class="btn btn-primary" value="搜索" />
+        <a class="btn btn-danger" href="{:U('StuSy/index')}">清空</a>
+    </form>
+
+    <table class="table table-hover table-bordered table-list">
+        <thead>
+        <tr>
+            <th width="150">助学金类型</th>
+            <th width="100">助学金金额</th>
+            <th width="100">申请时间</th>
+            <th width="80">状态</th>
+            <th width="50">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach name="data" item="vo">
+            <tr>
+                <td>{$vo.type_name}</td>
+                <td>{$vo.money}</td>
+                <td>{$vo.create_time}</td>
+                <if condition="$vo['status'] eq '申请中'">
+                    <td style="color:black;">{$vo.status}</td>
+                    <elseif condition="$vo['status'] eq '审批通过'" />
+                    <td style="color:orange;">{$vo.status}</td>
+                    <elseif condition="$vo['status'] eq '审批拒绝'" />
+                    <td style="color:red;">{$vo.status}</td>
+                </if>
+                <td>
+                    <a href="{:U('StuSy/remove_add',array('id'=>$vo['id']))}" class="rem_sy">取消申请</a>
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+        <!--<tfoot>-->
+            <!--<th width="150">助学金类型</th>-->
+            <!--<th width="100">助学金金额</th>-->
+            <!--<th width="100">申请时间</th>-->
+            <!--<th width="80">状态</th>-->
+            <!--<th width="50">操作</th>-->
+        <!--</tfoot>-->
+    </table>
+    <div class="pagination">{$page}</div>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+    //取消申请操作
+    if ($('.rem_sy').length) {
+        Wind.use('artDialog', function () {
+            $('.rem_sy').on('click', function (e) {
+                e.preventDefault();
+                var $_this = this,
+                        $this = $($_this),
+                        href = $this.data('href'),
+                        msg = $this.data('msg');
+                href = href ? href : $this.attr('href');
+                var  status = $(this).attr('status');
+
+                art.dialog({
+                    title: false,
+                    icon: 'question',
+                    content: msg ? msg : '确定要取消吗？',
+                    follow: $_this,
+                    close: function () {
+                        $_this.focus();; //关闭时让触发弹窗的元素获取焦点
+                        return true;
+                    },
+                    okVal: "确定",
+                    ok: function () {
+                        $.getJSON(href).done(function (data) {
+                            if (data.state === 'success') {
+                                console.log($(".rem_sy").attr('status'));
+                                if (data.referer) {
+                                    location.href = data.referer;
+                                } else {
+                                    reloadPage(window);
+                                }
+
+                            } else if (data.state === 'fail') {
+                                //art.dialog.alert(data.info);
+                                //alert(data.info);//暂时处理方案
+                                art.dialog({
+                                    content: data.info,
+                                    icon: 'warning',
+                                    ok: function () {
+                                        this.title(data.info);
+                                        return true;
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    cancelVal: '关闭',
+                    cancel: true
+                });
+
+
+            });
+
+        });
+    }
+
+</script>
+</body>
+</html>

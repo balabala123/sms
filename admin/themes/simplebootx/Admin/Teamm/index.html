@@ -1,0 +1,228 @@
+<admintpl file="header"/>
+
+</head>
+<style>
+    .update:hover{
+        cursor:pointer;
+    }
+    #up_div{
+        display: none;
+        width: 500px;
+        word-wrap:break-word;
+        background-color: RGBa(0,0,0,0.3);
+        color: white;
+        margin-left: 300px;
+        margin-top: 50px;
+        border-radius:10px;
+        position: fixed;
+        align-content: center;
+    }
+</style>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li  class="active"><a href="{:U('Teamm/index')}">教师信息</a></li>
+        <li><a href="{:U('Teamm/add')}">添加</a></li>
+    </ul>
+    <form  method="post" action="{:U('Teamm/index')}">
+        教师姓名:
+        <input type="text" name="tea_name" style="width: 250px;" value="{:I('request.tea_name/s','')}" placeholder="请填写教师姓名">
+        教师工号：
+        <input type="text" name="tea_no" style="width: 250px;" value="{:I('request.tea_no/s','')}" placeholder="请填写教师工号">
+        教授科目:
+        <select style="width: 223px;" name="sub">
+            <option disabled selected>--请选择院系--</option>
+            <volist name="subject" id="vo">
+                <option value="{$vo.subject_id}">{$vo.subject_name}</option>
+            </volist>
+        </select><br>
+        教授班级班号:
+        <input type="text" name="cls" style="width: 250px;" value="{:I('request.tea_no/s','')}" placeholder="请填写教师工号">
+        <input type="submit" class="btn btn-primary" value="搜索" />
+        <a class="btn btn-danger" href="{:U('Teamm/index')}">清空</a>
+    </form>
+
+    <!--修改start-->
+    <div id="up_div">
+        <center>  <h4>请修改教师信息</h4>
+            <form  method="post" action="{:U('Teamm/up_data')}">
+                <p>教师姓名：<input type="text" name="name" class="form-control" required id="up_name"></p>
+                <p>教授科目：<select name="subject" class="ft" id="up_subj" onchange="up_change()">
+                    <volist name="subject" id="vo">
+                        <option value="{$vo.subject_id}">{$vo.subject_name}</option>
+                    </volist>
+                </select></p>
+                </p>
+                <p>教授专业：<select name="depart" class="ft" id="up_depart" onchange="up_change_two()">
+                </select></p>
+                <p>教授班级：<span id="_class"> </span></p>
+                <input type="hidden" name="id" id="up_id">
+                <input type="submit" class="btn btn-primary" value="修改" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{:U('teamm/index')}"> <button class="btn btn-primary" type="button">返回</button></a>
+            </form>
+        </center>
+        <center><span id="up_mes" style="color: red;padding-top: 10px"> </span></center>
+    </div>
+    <!--修改end-->
+    <form class="js-ajax-form" action="{:U('teacher/delete')}" method="post" id="form2">
+        <input type="hidden" name="style" value="moment">
+        <div class="table-actions">
+            <button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Teamm/delete')}"
+                    data-subcheck="true" data-msg="{:L('DELETE_CONFIRM_MESSAGE')}">{:L('DELETE')}
+            </button>
+        </div>
+        <table class="table table-hover table-bordered table-list" style="width:120%;">
+            <thead>
+            <tr>
+                <th><label><input type="checkbox" class="js-check-all" data-direction="x"
+                                  data-checklist="js-check-x"></label></th>
+                <th>教师姓名</th>
+                <th>教师工号</th>
+                <th>教授课程</th>
+                <th>教授班级</th>
+                <th>{:L("ACTIONS")}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>
+                        <label class="checkbox inline">
+                            <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x"
+                                   name="ids[]" value="{$vo.teacher_id}" title="ID:{$vo.stu_id}">
+                        </label>
+                    </td>
+
+                    <td>{$vo.teacher_name}</td>
+                    <td>{$vo.teacher_no}</td>
+                    <td>{$vo.sub}</td>
+                    <td>{$vo.class_no}</td>
+                    <td>
+                        <a class="js-ajax-delete" href="{:U('Teamm/delete',array('teacher_id'=>$vo['teacher_id']))}">{:L('DELETE')}</a>
+                        <a class="update">修改<span hidden>{$vo['teacher_id']}</span></a>
+
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th><label><input type="checkbox" class="js-check-all" data-direction="x"
+                                  data-checklist="js-check-x"></label></th>
+                <th>教师姓名</th>
+                <th>教师工号</th>
+                <th>教授课程</th>
+                <th>教授班级</th>
+                <th>{:L("ACTIONS")}</th>
+            </tr>
+            </tfoot>
+        </table>
+        <div class="pagination">{$page}</div>
+
+        <div class="table-actions">
+            <button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Teamm/delete')}"
+                    data-subcheck="true" data-msg="{:L('DELETE_CONFIRM_MESSAGE')}">{:L('DELETE')}
+            </button>
+            <!--<button class="btn btn-primary btn-small " type="button">{:L('DATA_IMPORT')}</button>-->
+            <!--<button class="btn btn-primary btn-small " type="button">{:L('DATA_EXPORT')}</button>-->
+            <!--<a class="btn btn-primary btn-small" form_action="{:U('Mailer/templet')}" href="JavaScript:;"-->
+            <!--onclick="send(this)">{:L('GROUP_MAIL')}</a>-->
+        </div>
+    </form>
+</div>
+</body>
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+
+    $(".update").on("click", function () {
+        var span = $(this).find("span").html();
+        $.ajax({
+                   type: "POST",
+                   url:"{:U('Teamm/get_data')}",
+                   dataType:"json",
+                   data: {
+                       'teacher_id': span
+                   },
+                   success: function(data){
+//                       console.log(data);
+                       $('#up_name').val(data.teacher_name);
+                       $('#up_id').val(data.teacher_id);
+                       $('#up_subj').val(data.subject_id);
+                       $("#up_depart").append("<option value='" + data.depart_id + "'>" + data.dep + "</option>");
+                       $('#_class').html(data.class_no);
+                       $('#up_div').slideToggle("slow");
+                   }
+               }).responseText;
+    });
+
+    //修改三级联动
+    function up_change() {
+       sub_id = $("#up_subj").val();
+        $("#up_depart").text(" ");
+        $.ajax({
+                   type: "POST",
+                   url: "{:U('Teamm/change')}",
+                   dataType: "json",
+                   data: {
+                       'subject_id': sub_id
+                   },
+                   success: function (data) {
+                       delete data['state'];
+                       delete data['referer'];
+                       $.each(data, function (name, value) {
+                           var depart_name = value.depart_name;
+                           var depart_id = value.depart_id;
+                           $("#up_depart").append("<option value='" + depart_id + "'>" + depart_name + "</option>");
+                       })
+                       up_change_two();
+                   }
+               }).responseText;
+    }
+
+    function up_change_two() {
+        depart_id = $("#up_depart").val();
+        $("#_class").text(' ');
+        $.ajax({
+                   type: "POST",
+                   url:"{:U('Stumm/change_two')}",
+                   dataType:"json",
+                   data: {
+                       'depart_id': depart_id
+                   },
+                   success: function(data){
+                       delete data['state'];
+                       delete data['referer'];
+                       $.each(data,function(name,value){
+                           var class_no = value.class_no;
+                           var class_id = value.class_id;
+                           $("#_class").append("<input type='checkbox' name='cls[]' value='" + class_id + "' class='__class'/>"+ class_no);
+                       })
+                   }
+               }).responseText;
+    }
+
+    //修改
+   /* $("#up_sub").on("click",function(){
+        name = $('#up_name').val();
+        sub = $('#up_subj').val();
+        depart = $('#up_depart').val();
+        alert($("#_class").html());
+        id = $('#up_id').val();
+        $.ajax({
+                   type: "POST",
+                   url:"{:U('Teamm/up_data')}",
+                   dataType:"json",
+                   data: {
+                       'teacher_id': id,
+                       'teacher_name': name,
+                       'subject_id': sub,
+                       'depart_id': depart,
+                       'class_id': class1,
+                   },
+                   success: function(data){
+                       alert(data.info);
+                   }
+               }).responseText;
+    })*/
+</script>
+</html>

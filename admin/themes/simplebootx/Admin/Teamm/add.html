@@ -1,0 +1,124 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:U('Teamm/index')}">教师信息</a></li>
+        <li  class="active"><a href="{:U('Teamm/add')}">添加</a></li>
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Teamm/add_post')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">教师姓名:</label>
+                <div class="controls form-group">
+                    <input type="text" name="tea_name" required>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">教授课程:</label>
+                <div class="controls">
+                    <select style="width: 223px;" name="subj" id="subj">
+                        <option disabled selected>--请选择课程--</option>
+                        <volist name="subject" id="vo">
+                            <option value="{$vo.subject_id}">{$vo.subject_name}</option>
+                        </volist>
+                    </select>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">教授专业:</label>
+                <div class="controls">
+                    <select style="width: 223px;" name="dep" id="dep" onchange="dep()">
+                        <option disabled selected>--请选择教授专业--</option>
+                    </select>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">教授班级:</label>
+                <div class="controls">
+                    <p id="_class"> </p>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+
+<script>
+
+    //三级联动
+    $("#subj").on("change",function(){
+        id = $("#subj").val();
+        $("#dep").text(" ");
+        $.ajax({
+                   type: "POST",
+                   url:"{:U('teamm/change')}",
+                   dataType:"json",
+                   data: {
+                       'subject_id': id
+                   },
+                   success: function(data){
+                       delete data['state'];
+                       delete data['referer'];
+                       $.each(data,function(name,value){
+                           var depart_name = value.depart_name;
+                           var depart_id = value.depart_id;
+                           $("#dep").append("<option value='"+depart_id+"'>" + depart_name + "</option>");
+                       })
+                       depart_id = $("#dep").val();
+                       $("#_class").text(" ");
+                       $.ajax({
+                                  type: "POST",
+                                  url:"{:U('Stumm/change_two')}",
+                                  dataType:"json",
+                                  data: {
+                                      'depart_id': depart_id
+                                  },
+                                  success: function(data){
+                                      delete data['state'];
+                                      delete data['referer'];
+                                      $.each(data,function(name,value){
+                                          var class_no = value.class_no;
+                                          var class_id = value.class_id;
+                                          $("#_class").append("<label><input type='checkbox' name='cls[]' value='" + class_id + "' class='__class'/>"+ class_no+"</label>");
+                                      })
+                                  }
+                              }).responseText;
+                   }
+               }).responseText;
+    })
+
+    //三级联动2
+    $("#dep").on("change",function(){
+        depart_id = $("#dep").val();
+        $("#_class").text(" ");
+        $.ajax({
+                   type: "POST",
+                   url:"{:U('Stumm/change_two')}",
+                   dataType:"json",
+                   data: {
+                       'depart_id': depart_id
+                   },
+                   success: function(data){
+                       delete data['state'];
+                       delete data['referer'];
+                       $.each(data,function(name,value){
+                           var class_no = value.class_no;
+                           var class_id = value.class_id;
+                           $("#_class").append("<label><input type='checkbox' name='cls[]' value='" + class_id + "' class='__class'/>"+ class_no+"</label>");
+                       })
+                   }
+               }).responseText;
+    })
+
+
+</script>
+</body>
+</html>

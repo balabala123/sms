@@ -1,0 +1,30 @@
+<admintpl file="header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <h2>个人信息展示：</h2>
+    <table class="table table-hover table-bordered table-list" style="width:60%;">
+        <tr>
+            <th>工号</th>
+            <td>{$list.teacher_no}</td>
+        </tr>
+        <tr>
+            <th>姓名</th>
+            <td>{$list.teacher_name}</td>
+        </tr>
+        <tr>
+            <th>教授课程</th>
+            <td>{$list.subject}</td>
+        </tr>
+        <tr>
+            <th>教授班级</th>
+            <td>{$list.class_no}</td>
+           <!-- <td>
+                <a href="{:U('slide/ban',array('id'=>$vo['slide_id']))}">{$vo.class_no}</a>
+            </td>-->
+        </tr>
+    </table>
+</div>
+</body>
+<script src="__PUBLIC__/js/common.js"></script>
+</html>

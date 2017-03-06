@@ -1,0 +1,285 @@
+<admintpl file="header"/>
+
+</head>
+<style>
+    .update:hover{
+        cursor:pointer;
+    }
+    #up_div{
+        display: none;
+        width: 500px;
+        /*height: 250px;*/
+        word-wrap:break-word;
+        background-color: RGBa(0,0,0,0.3);
+        color: white;
+        margin-left: 300px;
+        margin-top: 50px;
+        border-radius:10px;
+        position: fixed;
+        align-content: center;
+    }
+</style>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li  class="active"><a href="{:U('Stumm/index')}">学生信息</a></li>
+        <li><a href="{:U('Stumm/add')}">添加</a></li>
+    </ul>
+    <form  method="post" action="{:U('Stumm/index')}">
+        学生姓名:
+        <input type="text" name="stu_name" style="width: 100px;" value="{:I('request.stu_name/s','')}" placeholder="请填写学生姓名">
+        所属院系:
+        <select style="width: 223px;" name="stu_xi" id="xi"  onchange="change()">
+            <option disabled selected>--请选择院系--</option>
+            <volist name="xi" id="vo">
+                <option value="{$vo.xi_id}">{$vo.xi_name}</option>
+            </volist>
+        </select>
+        所属专业:
+        <select style="width: 223px;" name="stu_dep" id="depart"   onchange="change_two()">
+            <option disabled selected>--请选择专业--</option>
+        </select>
+        所属班级:
+        <select style="width: 223px;" name="stu_class" id="class">
+            <option disabled selected>--请选择班级--</option>
+        </select><br>
+        <input type="submit" class="btn btn-primary" value="搜索" />
+        <a class="btn btn-danger" href="{:U('Stumm/index')}">清空</a>
+    </form>
+
+    <!--修改start-->
+    <div id="up_div">
+        <center>  <h4>请修改学生信息</h4>
+            <p>姓名：<input type="text" name="name" class="form-control" required id="up_name"></p>
+            <p>院系：<select name="depart" class="ft" id="up_xi" onchange="up_change()">
+                <foreach name='xi' item='v'>
+                    <option value="{$v['xi_id']}">{$v.xi_name}</option>
+                </foreach>
+            </select></p>
+            </p>
+            <p>专业：<select name="depart" class="ft" id="up_depart" onchange="up_change_two()">
+                <option></option>
+            </select></p>
+            <p>班级：<select name="lable" class="ft" id="up_class">
+
+            </select></p>
+            <input type="hidden" name="id" id="up_id">
+            <input type="button" value="修改" id="up_sub" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{:U('stumm/index')}"> <button class="btn btn-primary">返回</button></a></center>
+
+        <center><span id="up_mes" style="color: red;padding-top: 10px"> </span></center>
+    </div>
+    <!--修改end-->
+    <form class="js-ajax-form" action="{:U('stumm/delete')}" method="post" id="form2">
+        <input type="hidden" name="style" value="moment">
+        <div class="table-actions">
+            <button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Stumm/delete')}"
+                    data-subcheck="true" data-msg="{:L('DELETE_CONFIRM_MESSAGE')}">{:L('DELETE')}
+            </button>
+        </div>
+        <table class="table table-hover table-bordered table-list" style="width:120%;">
+            <thead>
+            <tr>
+                <th><label><input type="checkbox" class="js-check-all" data-direction="x"
+                                  data-checklist="js-check-x"></label></th>
+                <th>学生姓名</th>
+                <th>学生学号</th>
+                <th>院系</th>
+                <th>专业</th>
+                <th>班级</th>
+                <th>{:L("ACTIONS")}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>
+                        <label class="checkbox inline">
+                            <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x"
+                                   name="ids[]" value="{$vo.stu_id}" title="ID:{$vo.stu_id}">
+                        </label>
+                    </td>
+
+                    <td>{$vo.stu_name}</td>
+                    <td>{$vo.stu_pwd}</td>
+                    <td>{$vo.xi}</td>
+                    <td>{$vo.depart}</td>
+                    <td>{$vo.class}</td>
+                    <td>
+                        <a class="js-ajax-delete" href="{:U('Stumm/delete',array('stu_id'=>$vo['stu_id']))}">{:L('DELETE')}</a>
+                        <a class="update">修改<span hidden>{$vo['stu_id']}</span></a>
+
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th><label><input type="checkbox" class="js-check-all" data-direction="x"
+                                  data-checklist="js-check-x"></label></th>
+                <th>学生姓名</th>
+                <th>学生学号</th>
+                <th>院系</th>
+                <th>专业</th>
+                <th>班级</th>
+                <th>{:L("ACTIONS")}</th>
+            </tr>
+            </tfoot>
+        </table>
+        <div class="pagination">{$page}</div>
+
+        <div class="table-actions">
+            <button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Stumm/delete')}"
+                    data-subcheck="true" data-msg="{:L('DELETE_CONFIRM_MESSAGE')}">{:L('DELETE')}
+            </button>
+            <!--<button class="btn btn-primary btn-small " type="button">{:L('DATA_IMPORT')}</button>-->
+            <!--<button class="btn btn-primary btn-small " type="button">{:L('DATA_EXPORT')}</button>-->
+            <!--<a class="btn btn-primary btn-small" form_action="{:U('Mailer/templet')}" href="JavaScript:;"-->
+            <!--onclick="send(this)">{:L('GROUP_MAIL')}</a>-->
+        </div>
+    </form>
+</div>
+</body>
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+    //三级联动
+    function change(){
+        xi_id = $("#xi").val();
+        $("#depart").text(" ");
+        $("#depart").append("<option disabled selected value=0>--请选择专业--</option>");
+        $.ajax({
+                   type: "POST",
+                   url:"{:U('Stumm/change')}",
+                   dataType:"json",
+                   data: {
+                       'xi_id': xi_id
+                   },
+                   success: function(data){
+                       delete data['state'];
+                       delete data['referer'];
+                       $.each(data,function(name,value){
+                           var depart_name = value.depart_name;
+                           var depart_id = value.depart_id;
+                           $("#depart").append("<option value='"+depart_id+"'>" + depart_name + "</option>");
+                       })
+                   }
+               }).responseText;
+    }
+
+    //三级联动2
+    function change_two(){
+        depart_id = $("#depart").val();
+        $("#class").text(' ');
+        $("#class").append("<option selected disabled value=0>--请选择班级--</option>");
+        $.ajax({
+                   type: "POST",
+                   url:"{:U('Stumm/change_two')}",
+                   dataType:"json",
+                   data: {
+                       'depart_id': depart_id
+                   },
+                   success: function(data){
+                       delete data['state'];
+                       delete data['referer'];
+                       $.each(data,function(name,value){
+                           var class_no = value.class_no;
+                           var class_id = value.class_id;
+                           $("#class").append("<option value='"+class_id+"'>" + class_no + "</option>");
+                       })
+                   }
+               }).responseText;
+    }
+
+    $(".update").on("click", function () {
+        var span = $(this).find("span").html();
+        $.ajax({
+                   type: "POST",
+                   url:"{:U('Stumm/get_data')}",
+                   dataType:"json",
+                   data: {
+                       'stu_id': span
+                   },
+                   success: function(data){
+                       //console.log(data);
+                       $('#up_name').val(data.stu_name);
+                       $('#up_id').val(data.stu_id);
+                       $('#up_xi').val(data.xi_id);
+                       up_change();
+                       $('#up_depart').val(data.depart_id);
+                       $('#up_class').val(data.id);
+                       $('#up_div').slideToggle("slow");
+                   }
+               }).responseText;
+    });
+
+    //修改三级联动
+    function up_change() {
+        xi_id = $("#up_xi").val();
+        $("#up_depart").text(" ");
+        $.ajax({
+                   type: "POST",
+                   url: "{:U('Stumm/change')}",
+                   dataType: "json",
+                   data: {
+                       'xi_id': xi_id
+                   },
+                   success: function (data) {
+                       delete data['state'];
+                       delete data['referer'];
+                       $.each(data, function (name, value) {
+                           var depart_name = value.depart_name;
+                           var depart_id = value.depart_id;
+                           $("#up_depart").append("<option value='" + depart_id + "'>" + depart_name + "</option>");
+                       })
+                       up_change_two();
+                   }
+               }).responseText;
+    }
+
+    function up_change_two() {
+        depart_id = $("#up_depart").val();
+        $("#up_class").text(' ');
+        $.ajax({
+                   type: "POST",
+                   url:"{:U('Stumm/change_two')}",
+                   dataType:"json",
+                   data: {
+                       'depart_id': depart_id
+                   },
+                   success: function(data){
+                       delete data['state'];
+                       delete data['referer'];
+                       $.each(data,function(name,value){
+                           var class_no = value.class_no;
+                           var class_id = value.class_id;
+                           $("#up_class").append("<option value='"+class_id+"'>" + class_no + "</option>");
+                       })
+                   }
+               }).responseText;
+    }
+
+//修改
+    $("#up_sub").on("click",function(){
+        name = $('#up_name').val();
+        xi = $('#up_xi').val();
+        depart = $('#up_depart').val();
+        class1 = $('#up_class').val();
+        id = $('#up_id').val();
+        $.ajax({
+                   type: "POST",
+                   url:"{:U('Stumm/up_data')}",
+                   dataType:"json",
+                   data: {
+                       'stu_id': id,
+                       'stu_name': name,
+                       'xi_id': xi,
+                       'depart_id': depart,
+                       'class_id': class1,
+                   },
+                   success: function(data){
+                       alert(data.info);
+                   }
+               }).responseText;
+    })
+</script>
+</html>

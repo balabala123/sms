@@ -1,0 +1,53 @@
+<admintpl file="header" />
+
+<style>
+    .thtd{
+        width:150px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .form-required{
+        color:red;
+    }
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:U('StuSc/index')}">奖学金申请记录</a></li>
+        <li class="active"><a href="{:U('StuSc/add')}">申请</a></li>
+    </ul>
+    <form method="post" class="js-ajax-form" action="{:U('StuSc/add_post')}">
+        <table   class="table table-hover table-bordered table-list">
+            <tr>
+                <td class="thtd">奖学金类型</td>
+                <td>
+                    <select name="type_name" >
+                        <option>请选择</option>
+                        <foreach name="type" item="vo">
+                            <option>{$vo}</option>
+                        </foreach>
+                        <!--<option>其他(请在备注中说明)</option>-->
+                    </select>
+                    <span class="form-required">*</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="thtd">个人荣誉</td>
+                <td>
+                    <textarea  name="sc_note" style="height:200px;width:500px;"></textarea>
+                    <span class="form-required">*</span>
+                </td>
+            </tr>
+
+        </table>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">提交</button>
+            <a class="btn" href="javascript:history.back(-1);">返回</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

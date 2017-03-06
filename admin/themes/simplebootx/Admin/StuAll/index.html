@@ -1,0 +1,27 @@
+<admintpl file="header" />
+
+<style>
+
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:U('StuGrade/index')}">个人综合测评成绩</a></li>
+    </ul>
+    <table class="table table-hover table-bordered table-list">
+        <tr>
+            <th style="width:150px">姓名</th>
+            <th style="width:150px">综合测评成绩(分)</th>
+            <th style="width:150px">成绩等级</th>
+        </tr>
+        <tr>
+            <td>{$stu_name}</td>
+            <td>{$score}</td>
+            <td style="font-size: 20px;font-weight: bold;">{$lv}</td>
+        </tr>
+    </table>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

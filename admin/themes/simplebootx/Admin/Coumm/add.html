@@ -1,0 +1,48 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:U('Coumm/index')}">课程信息</a></li>
+        <li  class="active"><a href="{:U('Coumm/add')}">添加</a></li>
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Coumm/add_post')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">课程名称:</label>
+                <div class="controls form-group">
+                    <input type="text" name="cou_name" required>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">所属专业:</label>
+                <div class="controls">
+                    <input type="checkbox" name="all" id="all_sel">全选<br>
+                        <volist name="list" id="vo">
+                            <input type="checkbox" class="dep" name="dep[]" value="{$vo.depart_id}">{$vo.depart_name}<br>
+                        </volist>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+
+<script>
+    //        添加全选
+    $('#all_sel').change( function () {
+        if(this.checked){
+            $(".dep").prop('checked', true)
+        }else{
+            $(".dep").prop('checked', false)
+        }
+    } );
+
+</script>
+</body>
+</html>

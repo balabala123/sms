@@ -1,0 +1,75 @@
+<admintpl file="header" />
+<body>
+    <style>
+        ul{
+            list-style:none;
+        }
+        #d1{
+            /*border:1px solid red;*/
+            width:1200px;
+            height:450px;
+            margin-top: 30px;
+            margin-left: 50px;
+        }
+        li{
+            margin-top: 10px;
+            float: left;
+            list-style:none;
+            margin-left: 10px;
+        }
+        #d2{
+            margin-top:50px;
+            margin-left: 500px;
+        }
+    </style>
+    <div id="d1">
+        <center><h3>请选择图片</h3></center>
+        <ul id="xuan">
+            <foreach name='src' item='v'>
+                <li class="li">
+                    <div style="width:150px; height:150px;">
+                        <img src="__PUBLIC__/upload/{$v['image_src']}" draggable="true">
+                    </div>
+                    <a href="{:U('Lunbotu/delete',array('image_id'=>$v['image_id']))}" class="operation" name="del">删除</a>
+            </foreach>
+        </ul>
+    </div>
+    <div id="d2">
+        <form action="{:U('Lunbotu/add')}" method="post" enctype="multipart/form-data">
+            <div id="add_img">
+                <div class="add">
+                    <a href="javascript:void(0)" onclick="add()">添加图片</a>
+                    <a href="javascript:void(0)" onclick="del()">取消添加</a><br>
+                    <input type="file" name="image[]" required>
+                </div>
+            </div>
+            <input type="submit" value="上传">
+        </form>
+        <span style="color: red">{$msg}</span>
+    </div>
+</body>
+    <script>
+        document.ondragover = function(event){
+            event.preventDefault();
+        };
+        document.ondragdrop = function(event){
+            event.preventDefault();
+        };
+
+        add = function() {
+            //点击add，增加一行
+            var newTr = $(".add:first").clone(true);
+            $("#add_img").append(newTr);
+        }
+        del = function() {
+            // alert($(".add").length);
+            if ($(".add").length != 1){
+                alert( $(this).parent());
+                $(this).parent().remove();
+            }
+        }
+
+        delet = function() {
+            alert($(".li").val());
+        }
+    </script>
