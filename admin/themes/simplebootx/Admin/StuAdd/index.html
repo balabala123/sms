@@ -38,11 +38,13 @@
                     <td>{$vo.add_note}</td>
                     <td>{$vo.create_time}</td>
                     <if condition="$vo['status'] eq '申请中'">
-                        <td style="color:black;">{$vo.status}</td>
-                    <elseif condition="$vo['status'] eq '审批通过'" />
-                        <td style="color:orange;">{$vo.status}</td>
-                    <elseif condition="$vo['status'] eq '审批拒绝'" />
-                        <td style="color:red;">{$vo.status}</td>
+                        <td style="color:black;font-weight: bold;font-size: 13px;">{$vo.status}</td>
+                        <elseif condition="$vo['status'] eq '审批通过'" />
+                        <td style="color:green;font-weight: bold;font-size: 13px;">{$vo.status}</td>
+                        <elseif condition="$vo['status'] eq '审批拒绝'" />
+                        <td style="color:red;font-weight: bold;font-size: 13px;">{$vo.status}</td>
+                        <elseif condition="$vo['status'] eq '已取消'" />
+                        <td style="color:orange;font-weight: bold;font-size: 13px;">{$vo.status}</td>
                     </if>
                     <td>
                         <a href="{:U('StuAdd/remove_add',array('id'=>$vo['id']))}" class="rem_add">取消申请</a>

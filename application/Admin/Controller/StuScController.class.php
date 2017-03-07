@@ -98,7 +98,8 @@ class StuScController extends AdminbaseController {
         if($status['status'] == 1){
             $this->error('审批已经通过，无法取消!');
         }else{
-            if ($this->model->where(array('id'=>$id))->save(array('disabled'=>1))!==false) {
+            //更改状态值为3（已取消）
+            if ($this->model->where(array('id'=>$id))->save(array('status'=>3))!==false) {
                 $this->success('取消成功');
             } else {
                 $this->error('取消失败');
