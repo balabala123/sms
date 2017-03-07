@@ -13,7 +13,7 @@ class StuMessageController extends AdminbaseController {
     }
 
     public function index(){
-        
+
         $stu_id = $_COOKIE['stu_id'];
         $stu_msg = M("Student");
         $data = $stu_msg->field('cmf_student.stu_name,cmf_xi.xi_name,cmf_depart.depart_name,cmf_class.class_no,
