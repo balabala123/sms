@@ -23,11 +23,11 @@
             $data['subject'] = $subject['subject_name'];
             $class_id = explode('-',$data['class_id']);
             $where['class_id'] = array('in',$class_id);
-            $class = $this->classmdl->where($where)->field('class_no')->select();
-            foreach($class as $value) {
+            $class = $this->classmdl->where($where)->field('class_no,class_id')->select();
+            /*foreach($class as $value) {
                 $data['class_no'] .= $value['class_no'].' ';
-            }
-            // $this->assign('class',$class);
+            }*/
+            $this->assign('class',$class);
             $this->assign('list',$data);
             $this->display();
         }

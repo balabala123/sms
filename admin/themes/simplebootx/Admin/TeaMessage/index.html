@@ -18,10 +18,12 @@
         </tr>
         <tr>
             <th>教授班级</th>
-            <td>{$list.class_no}</td>
-           <!-- <td>
-                <a href="{:U('slide/ban',array('id'=>$vo['slide_id']))}">{$vo.class_no}</a>
-            </td>-->
+            <!--<td>{$list.class_no}</td>-->
+            <td>
+                <volist name="class" id="vo">
+                    <a href="{:U('TeaGrade/index',array('id'=>$vo['class_id']))}">{$vo.class_no}</a>&nbsp;&nbsp;
+                </volist>
+            </td>
         </tr>
     </table>
 </div>
