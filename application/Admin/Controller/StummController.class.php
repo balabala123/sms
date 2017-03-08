@@ -19,7 +19,7 @@
             $this->ximdl = M('xi');
             $this->depmdl = M('depart');
             $this->classmdl = M('class');
-            $this->pageNum = 1;
+            $this->pageNum = 10;
         }
 
         //查看学生信息
@@ -42,7 +42,7 @@
             //搜索end
             $count = $this->model->where($where)->count();
             $page = $this->page($count, $this->pageNum);
-            $data = $this->model->where($where)->limit($page->firstRow , $page->listRows)->select();
+            $data = $this->model->where($where)->limit($page->firstRow , $page->listRows)->order('class_id')->select();
             foreach($data as $key=>$item) {
                 $xi = $this->ximdl->where("xi_id=" . $item['xi_id'])->field('xi_name')->find();
                 $data[$key]['xi'] = $xi['xi_name'];
@@ -76,16 +76,17 @@
             //学号start
             $class_no = $this->classmdl->where('class_id='.$data['class_id'])->field('class_no')->find();
             $stu_no = $this->model->where('class_id='.$data['class_id'])->max(stu_no);
-            if(!isset($stu_no)) {
+            $stu_no = substr($stu_no,-2,2);
+            if(!isset($stu_no) || empty($stu_no)) {
                 $stu_no = '01';
             }else{
                 $stu_no = ++$stu_no;
-                if ($stu_no < 9) {
+                if ($stu_no <= 9) {
                     $stu_no = '0' . $stu_no;
                 }
             }
             $data['stu_pwd'] = sp_password($class_no['class_no']. $stu_no);
-            $data['stu_no'] = $stu_no;
+            $data['stu_no'] = $class_no['class_no']. $stu_no;
             //end
             if ($this->model->data($data)->add()){
             $this->success("添加成功", U('Stumm/add'));
@@ -104,10 +105,21 @@
             } elseif(is_numeric($id)) {
                 $where['stu_id'] = $id;
             }
+
             $where || $this->error(L('NO_DATA'));
+            $no = $this->model->where($where)->field('stu_no,class_id')->select();
             $res = $this->model->where($where)->delete();
             if($res) {
-                $this->success("删除成功");
+                foreach($no as $value) {
+                    $where_no['stu_no'] = array('gt',$value['stu_no']);
+                    $where_no['class_id'] = $value['class_id'];
+                    $bool[] = $this->model->where($where_no)->setDec('stu_no',1);
+                }
+                if(array_key_exists('false',$bool)) {
+                    $this->error("失败");
+                }else {
+                    $this->success("删除成功");
+                }
             }else{
                 $this->error("删除失败");
             }
@@ -143,6 +155,7 @@
             $depart_id = $this->params['depart_id'];
             $class_id = $this->params['class_id'];
             $stu_name = $this->params['stu_name'];
+            $no = $this->model->getFieldBystu_id($stu_id, 'stu_no');
             //从数据库中拿到原有的depart_id
             $mdepart = $this->model->getFieldBystu_id($stu_id, 'depart_id');
             //从数据库中拿到姓名
@@ -154,27 +167,36 @@
             //当修改院系、专业或者班级时
             if ($depart_id != $mdepart || $mclass != $class_id || $mxi != $xi_id) {
                 $class_no = $this->classmdl->where('class_id='.$class_id)->field('class_no')->find();
-                $stu_no = $this->model->where('class_id='.$class_id)->max(stu_no);
-                if(!isset($stu_no)) {
+                $stu_no = $this->model->where('class_id='.$class_id)->max('stu_no');
+                $stu_no = substr($stu_no,-2,2);
+                if(!isset($stu_no) || empty($stu_no)) {
                     $stu_no = '01';
                 }else{
                     $stu_no = ++$stu_no;
-                    if ($stu_no < 9) {
+                    if ($stu_no <= 9) {
                         $stu_no = '0' . $stu_no;
                     }
                 }
                 $data = array();
                 $data['stu_pwd'] = sp_password($class_no['class_no']. $stu_no);
-                $data['stu_no'] = $stu_no;
+                $data['stu_no'] = $class_no['class_no']. $stu_no;
                 $data['class_id'] = $class_id;
                 $data['depart_id'] = $depart_id;
                 $data['stu_name'] = $stu_name;
                 $data['xi_id'] = $xi_id;
                 $bool = $this->model->where('stu_id=' . $stu_id)->save($data);
                 if ($bool) {
-                    $this->success("添加成功", U('Stumm/add'));
+                    //修改班级其他学生的学号
+                    $where_no['stu_no'] = array('gt',$no);
+                    $where_no['class_id'] = $mclass;
+                    $res = $this->model->where($where_no)->setDec('stu_no',1);
+                    if($res) {
+                        $this->success("修改成功", U('Stumm/add'));
+                    }else{
+                        $this->error("修改失败");
+                    }
                 } else {
-                    $this->error("添加失败");
+                    $this->error("修改失败");
                 }
             } elseif ($mname != $stu_name) {
                 $data['stu_name'] = $stu_name;

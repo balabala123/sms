@@ -27,7 +27,7 @@
 
         public function index() {
             $id = 25;
-            $data = $this->model->where('teacher_id='.$id)->field('class_id')->find();
+            $data = $this->model->where('teacher_id='.$id)->field('class_id,subject_id')->find();
             $class_id = explode('-',$data['class_id']);
             $where['class_id'] = array('in',$class_id);
             $class = $this->classmdl->where($where)->field('class_no,class_id')->select();
@@ -39,67 +39,104 @@
                 $class_id = $class_id[0];
             }
             $this->assign('class_id',$class_id);
-            $sql = "select s.stu_name,s.stu_no,s.stu_id,g.grade,g.grade_id from cmf_student s,cmf_grade g where class_id=".$class_id.' and s.stu_id=g.stu_id';
-            $student = $this->model->query($sql);
-            if(!$student) {
+           // $sql = "select s.stu_name,s.stu_no,s.stu_id,g.grade,g.grade_id from cmf_student s,cmf_grade g where class_id=".$class_id.' and s.stu_id=g.stu_id';
+          //  $student = $this->model->query($sql);
+          //  if(!$student) {
                 $student = $this->stumdl->where('class_id=' . $class_id)->field('stu_name,stu_no,stu_id')->select();
+                $where['subject_id'] = $data['subject_id'];
+                foreach($student as $v) {
+                    $where['stu_id'] = $v['stu_id'];
+                    $grade[] = $this->grademdl->where($where)->field('grade,grade_id')->find();
+                }
+          //  }
+               foreach($student as $k=>$v) {
+                   $data_all[$k]['stu_id'] = $v['stu_id'];
+                   $data_all[$k]['stu_name'] = $v['stu_name'];
+                   $data_all[$k]['stu_no'] = $v['stu_no'];
+               }
+            foreach($grade as $k=>$v) {
+                $data_all[$k]['grade_id'] = $v['grade_id'];
+                $data_all[$k]['grade'] = $v['grade'];
             }
-            $this->assign('stu_list',$student);
+
+            $this->assign('stu_list',$data_all);
             //end
             $this->display();
         }
 
         public function grade()
         {
-           if(!$this->params['grade_id'][0]) {
-               foreach ($this->params['stu_id'] as $k => $v) {
-                   $data[$k]['stu_id'] = $v;
-               }
-               foreach ($this->params['grade'] as $k => $item) {
-                   $data[$k]['grade'] = $item;
-               }
-               $id = 25;
-               $subject = $this->model->where('teacher_id=' . $id)->field('subject_id')->find();
-               foreach ($data as $k => $v) {
-                   $data[$k]['subject_id'] = $subject['subject_id'];
-               }
-               $this->grademdl->startTrans();
-               foreach ($data as $k => $v) {
-                   $bool[] = $this->grademdl->data($v)->add();
-               }
-               if (!array_key_exists('false', $bool)) {
-                   $this->grademdl->commit();
-                   $this->success('操作成功');
-               } else {
-                   $this->error('操作失败');
-                   $this->grademdl->rollback();
-               }
-           }else{
-               foreach ($this->params['stu_id'] as $k => $v) {
-                   $data[$k]['stu_id'] = $v;
-               }
-               foreach ($this->params['grade'] as $k => $item) {
-                   $data[$k]['grade'] = $item;
-               }
-               foreach ($this->params['grade_id'] as $k => $item) {
-                   $data[$k]['grade_id'] = $item;
-               }
-               $id = 25;
-               $subject = $this->model->where('teacher_id=' . $id)->field('subject_id')->find();
-               foreach ($data as $k => $v) {
-                   $data[$k]['subject_id'] = $subject['subject_id'];
-               }
-               $this->grademdl->startTrans();
-               foreach ($data as $k => $v) {
-                   $bool[] = $this->grademdl->save($v);
-               }
-               if (!array_key_exists('false', $bool)) {
-                   $this->grademdl->commit();
-                   $this->success('操作成功');
-               } else {
-                   $this->error('操作失败');
-                   $this->grademdl->rollback();
-               }
-           }
+            if (!$this->params['grade_id'][0]) {
+                foreach ($this->params['stu_id'] as $k => $v) {
+                    $data[$k]['stu_id'] = $v;
+                }
+                foreach ($this->params['grade'] as $k => $item) {
+                    $data[$k]['grade'] = $item;
+                }
+                $id = 25;
+                $subject = $this->model->where('teacher_id=' . $id)->field('subject_id')->find();
+                foreach ($data as $k => $v) {
+                    $data[$k]['subject_id'] = $subject['subject_id'];
+                }
+                $this->grademdl->startTrans();
+                foreach ($data as $k => $v) {
+                    $bool[] = $this->grademdl->data($v)->add();
+                }
+                if (!array_key_exists('false', $bool)) {
+                    $this->grademdl->commit();
+                    $this->success('录入成功');
+                } else {
+                    $this->error('录入失败');
+                    $this->grademdl->rollback();
+                }
+            } else {
+                foreach ($this->params['stu_id'] as $k => $v) {
+                    $data[$k]['stu_id'] = $v;
+                }
+                foreach ($this->params['grade'] as $k => $item) {
+                    $data[$k]['grade'] = $item;
+                }
+                foreach ($this->params['grade_id'] as $k => $item) {
+                    $data[$k]['grade_id'] = $item;
+                }
+                $id = 25;
+                $subject = $this->model->where('teacher_id=' . $id)->field('subject_id')->find();
+                foreach ($data as $k => $v) {
+                    $data[$k]['subject_id'] = $subject['subject_id'];
+                }
+                $this->grademdl->startTrans();
+                foreach($data as $k=>$v) {
+                    if(!$v['grade_id']) {
+                        $this->grademdl->data($v)->add();
+                    }
+                }
+                foreach ($data as $k => $v) {
+                    $bool[] = $this->grademdl->save($v);
+                }
+                if (!array_key_exists('false', $bool)) {
+                    $this->grademdl->commit();
+                    $this->success('修改成功');
+                } else {
+                    $this->error('修改失败');
+                    $this->grademdl->rollback();
+                }
+            }
         }
+
+        public function add_grade() {
+            !isset($this->params['stu_id']) && $this->error('学生ID为空');
+            !isset($this->params['grade']) && $this->error('请填写学生成绩');
+            $id = 25;
+            $subject = $this->model->where('teacher_id=' . $id)->field('subject_id')->find();
+            $data['subject_id'] = $subject['subject_id'];
+            $data['stu_id'] = $this->params['stu_id'];
+            $data['grade'] = $this->params['grade'];
+            $res = $this->grademdl->save($data);
+            if($res) {
+                $this->success('录入成功');
+            }else{
+                $this->error('录入失败');
+            }
+        }
+
     }

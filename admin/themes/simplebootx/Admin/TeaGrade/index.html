@@ -7,9 +7,6 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <volist name="class" id="vo">
-            <li  <if condition="$class_id eq $vo['class_id']">class="active"</if>><a href="{:U('TeaGrade/index',array('id'=>$vo['class_id']))}">{$vo.class_no}</a></li>
-        </volist>
        <!-- <li  class="active"><a href="{:U('Teamm/index')}">教师信息</a></li>
         <li><a href="{:U('Teamm/add')}">添加</a></li>-->
     </ul>
@@ -30,9 +27,14 @@
                 <tr>
                     <td>{$vo.stu_no}</td>
                     <td>{$vo.stu_name}</td>
-                    <td><input type="number" name="grade[]" value="{$vo.grade}">
-                        <input type="hidden" name="stu_id[]" value="{$vo.stu_id}">
+                    <td><input type="number" name="grade[]" value="{$vo.grade}" id="grade">
+                        <input type="hidden" name="stu_id[]" value="{$vo.stu_id}" id="stu_id">
                         <input type="hidden" name="grade_id[]" value="{$vo.grade_id}">
+                        <!-- <if condition="!empty($vo['grade_id'])">
+                            <input type="hidden" name="grade_id[]" value="{$vo.grade_id}">
+                        <else/>
+
+                        </if>-->
                     </td>
                 </tr>
             </foreach>
@@ -48,29 +50,25 @@
 <script src="__PUBLIC__/js/common.js"></script>
 <script>
 
-    $(".update").on("click", function () {
-        var span = $(this).find("span").html();
+   $("#button").on("click", function () {
+        var grade = $('#grade').val();
+        var stu_id = $('#stu_id').val();
         $.ajax({
                    type: "POST",
-                   url:"{:U('Teamm/get_data')}",
+                   url:"{:U('TeaGrade/add_grade')}",
                    dataType:"json",
                    data: {
-                       'teacher_id': span
+                       'grade': grade,
+                       'stu_id':stu_id,
                    },
                    success: function(data){
-//                       console.log(data);
-                       $('#up_name').val(data.teacher_name);
-                       $('#up_id').val(data.teacher_id);
-                       $('#up_subj').val(data.subject_id);
-                       $("#up_depart").append("<option value='" + data.depart_id + "'>" + data.dep + "</option>");
-                       $('#_class').html(data.class_no);
-                       $('#up_div').slideToggle("slow");
+                      alert(data.info);
                    }
                }).responseText;
     });
 
     //修改三级联动
-    function up_change() {
+   /*  function up_change() {
         sub_id = $("#up_subj").val();
         $("#up_depart").text(" ");
         $.ajax({
@@ -113,30 +111,8 @@
                        })
                    }
                }).responseText;
-    }
+    }*/
 
-    //修改
-    /* $("#up_sub").on("click",function(){
-     name = $('#up_name').val();
-     sub = $('#up_subj').val();
-     depart = $('#up_depart').val();
-     alert($("#_class").html());
-     id = $('#up_id').val();
-     $.ajax({
-     type: "POST",
-     url:"{:U('Teamm/up_data')}",
-     dataType:"json",
-     data: {
-     'teacher_id': id,
-     'teacher_name': name,
-     'subject_id': sub,
-     'depart_id': depart,
-     'class_id': class1,
-     },
-     success: function(data){
-     alert(data.info);
-     }
-     }).responseText;
-     })*/
+
 </script>
 </html>

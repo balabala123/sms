@@ -29,6 +29,9 @@
             if ($this->params['sub_name']) {
                 $where['subject_name'] = $this->params['sub_name'] ;
             }
+            if ($this->params['jiidan']) {
+                $where['score'] = $this->params['jidian'] ;
+            }
             if ($this->params['dep_name']) {
                 $dep =$this->depmdl->where("depart_name='".$this->params['dep_name']."'")->field('depart_id')->find();
                 $where['depart_id'] = get_search_str($dep['depart_id']) ;
@@ -52,6 +55,7 @@
             !isset($this->params['cou_name']) && $this->error('请填写课程名称');
             $data['depart_id'] = implode(',',$this->params['dep']);
             $data['subject_name'] = $this->params['cou_name'];
+            $data['score'] = $this->params['cou_ji'];
             if ($this->model->data($data)->add()){
                 $this->success("添加成功", U('Coumm/add'));
             } else {
@@ -85,7 +89,9 @@
         public function up_data() {
             !isset($this->params['name']) && $this->error('请填写课程名称');
             !isset($this->params['id']) && $this->error('课程ID不能为空');
+            !isset($this->params['score']) && $this->error('绩点不能为空');
             $data['subject_name'] = $this->params['name'];
+            $data['score'] = $this->params['score'];
             $id = $this->params['id'];
             $bool = $this->model->where('subject_id=' . $id)->save($data);
             if ($bool) {

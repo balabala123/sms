@@ -33,6 +33,8 @@
         <input type="text" name="sub_name" style="width: 150px;" value="{:I('request.sub_name/s','')}" placeholder="请填写课程名称">
         所属专业:
         <input type="text" name="dep_name" style="width: 150px;" value="{:I('request.dep_name/s','')}" placeholder="所属专业">
+        绩点:
+        <input type="number" name="jidian" style="width: 150px;" value="{:I('request.dep_name/s','')}" placeholder="绩点">
         <input type="submit" class="btn btn-primary" value="搜索" />
         <a class="btn btn-danger" href="{:U('coumm/index')}">清空</a>
     </form>
@@ -42,6 +44,7 @@
         <center>
             <form  method="post" action="{:U('Coumm/up_data')}">
                 <p>课程名称：<input type="text" name="name" class="form-control" required id="up_name"></p>
+                <p>绩点：<input type="number" name="score" class="form-control" required id="up_score"></p>
                 <input type="hidden" name="id" id="up_id">
                 <input type="submit" class="btn btn-primary" value="修改" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="{:U('Coumm/index')}"> <button class="btn btn-primary" type="button">返回</button></a>
@@ -64,6 +67,7 @@
                                   data-checklist="js-check-x"></label></th>
                 <th>课程ID</th>
                 <th>课程名称</th>
+                <th>绩点</th>
                 <th>{:L("ACTIONS")}</th>
             </tr>
             </thead>
@@ -79,6 +83,7 @@
 
                     <td>{$vo.subject_id}</td>
                     <td>{$vo.subject_name}</td>
+                    <td>{$vo.score}</td>
                     <td>
                         <a class="js-ajax-delete" href="{:U('Coumm/delete',array('subject_id'=>$vo['subject_id']))}">{:L('DELETE')}</a>
                         <a class="update">修改<span hidden>{$vo['subject_id']}</span></a>
@@ -124,6 +129,7 @@
                    },
                    success: function(data){
                        $('#up_name').val(data.subject_name);
+                       $('#up_score').val(data.score);
                        $('#up_id').val(data.subject_id);
                        $('#up_div').slideToggle("slow");
                    }

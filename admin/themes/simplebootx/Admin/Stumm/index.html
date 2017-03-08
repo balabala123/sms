@@ -101,7 +101,7 @@
                     </td>
 
                     <td>{$vo.stu_name}</td>
-                    <td>{$vo.stu_pwd}</td>
+                    <td>{$vo.stu_no}</td>
                     <td>{$vo.xi}</td>
                     <td>{$vo.depart}</td>
                     <td>{$vo.class}</td>
@@ -278,6 +278,10 @@
                    },
                    success: function(data){
                        alert(data.info);
+                       if(data.info == '修改成功') {
+                           $('#up_div').slideToggle("slow");
+                           location.reload()
+                       }
                    }
                }).responseText;
     })
