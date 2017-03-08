@@ -19,36 +19,36 @@ class ScApproveController extends AdminbaseController {
         $where['cmf_reward.disabled'] = 0;
         $where['cmf_reward.status'] = 0;
         //搜索
-        $xi_id = trim(I('request.xi_id'));
-        $depart_id = trim(I('request.depart_id'));
+        $xi_name = trim(I('request.xi_name'));
+        $depart_name = trim(I('request.depart_name'));
         $class_id = trim(I('request.class_id'));
         $type_name = trim(I('request.type_name'));
         $stu_name = trim(I('request.stu_name'));
-        $stu_id = trim(I('request.stu_id'));
-        if($xi_id != ''){
-            $where['cmf_reward.xi_id'] = array('like',"%$xi_id%");
+        $stu_no = trim(I('request.stu_no'));
+        if($xi_name != ''){
+            $where['xi_name'] = array('like',"%$xi_name%");
         }
-        if($type_name || ($type_name == 0 && $type_name != '')){
+        if($depart_name != ''){
+            $where['depart_name'] = array('like',"%$depart_name%");
+        }
+        if($class_id != ''){
+            $where['class_id'] = array('like',"%$class_id%");
+        }
+        if($type_name != ''){
             $where['cmf_reward.type_name'] = array('like',"%$type_name%");
         }
-        if($type_name || ($type_name == 0 && $type_name != '')){
-            $where['cmf_reward.type_name'] = array('like',"%$type_name%");
-        }
-        if($type_name || ($type_name == 0 && $type_name != '')){
-            $where['cmf_reward.type_name'] = array('like',"%$type_name%");
-        }
-        if($stu_name || ($stu_name == 0 && $stu_name != '')){
+        if($stu_name != ''){
             $where['stu_name'] = array('like',"%$stu_name%");
         }
-        if($stu_id || ($stu_id == 0 && $stu_id != '')){
-            $where['cmf_reward.stu_id'] = array('like',"%$stu_id%");
+        if($stu_no != ''){
+            $where['stu_no'] = array('like',"%$stu_no%");
         }
         //分页
         $count=$this->model->where($where)->count();
         $page = $this->page($count, 8);
         $this->assign("page", $page->show('Admin'));
 
-        $res = $this->model->field('stu_name,cmf_xi.xi_name,cmf_depart.depart_name,class_id,cmf_reward.id,cmf_reward.type_name,cmf_reward.stu_id')
+        $res = $this->model->field('stu_name,cmf_xi.xi_name,cmf_depart.depart_name,class_id,cmf_reward.id,cmf_reward.type_name,cmf_student.stu_no')
                             ->join('cmf_student on cmf_student.stu_id = cmf_reward.stu_id')
                             ->join('cmf_xi on cmf_xi.xi_id = cmf_student.xi_id')
                             ->join('cmf_depart on cmf_depart.depart_id = cmf_student.depart_id')
@@ -62,7 +62,7 @@ class ScApproveController extends AdminbaseController {
             $data[$k]['depart_name'] = $v['depart_name'];
             $data[$k]['class_id'] = $v['class_id'];
             $data[$k]['xi_name'] = $v['xi_name'];
-            $data[$k]['stu_id'] = $v['stu_id'];
+            $data[$k]['stu_no'] = $v['stu_no'];
             $data[$k]['type_name'] = $v['type_name'];
 
         }

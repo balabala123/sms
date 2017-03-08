@@ -1,0 +1,55 @@
+<admintpl file="header" />
+
+<style>
+
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:U('Scmsg/index')}">奖学金信息</a></li>
+        <li><a href="{:U('Scmsg/add')}">添加</a></li>
+        <li class="active"><a href="">编辑</a></li>
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Scmsg/edit_post')}">
+        <fieldset>
+            <div class="control-group ">
+                <label class="control-label">添加类型:</label>
+                <div class="controls form-group">
+                    <input type="text" name="type_name" value="{$data.type_name}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group ">
+                <label class="control-label">金额:</label>
+                <div class="controls form-group">
+                    <input type="text" name="money" value="{$data.money}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group ">
+                <label class="control-label">名额(每班):</label>
+                <div class="controls form-group">
+                    <input type="text" name="quota" value="{$data.quota}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group ">
+                <label class="control-label">申请时限:</label>
+                <div class="controls form-group">
+                    <input type="text" class="js-datetime" name="start_time" value="{$data.start_time}">
+                    至 <input type="text" class="js-datetime" name="end_time" value="{$data.end_time}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <input type="hidden" name="id" value="{$data.type_id}" >
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+            <a class="btn" href="{:U('Scmsg/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

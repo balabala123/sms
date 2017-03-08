@@ -11,13 +11,13 @@
     </ul>
     <form class="well form-search" method="post" action="{:U('ScApprove/index')}">
         院系:
-        <input type="text" name="xi_id" style="width: 120px;" value="{:I('request.xi_id/s','')}" >
+        <input type="text" name="xi_name" style="width: 120px;" value="{:I('request.xi_name/s','')}" >
         专业:
-        <input type="text" name="depart_id" style="width: 120px;" value="{:I('request.depart_id/s','')}" >
+        <input type="text" name="depart_name" style="width: 120px;" value="{:I('request.depart_name/s','')}" >
         班级:
         <input type="text" name="class_id" style="width: 40px;" value="{:I('request.class_id/s','')}" >
         学号:
-        <input type="text" name="stu_id" style="width: 120px;" value="{:I('request.stu_id/s','')}" >
+        <input type="text" name="stu_no" style="width: 120px;" value="{:I('request.stu_no/s','')}" >
         学生姓名:
         <input type="text" name="stu_name" style="width: 80px;" value="{:I('request.stu_name/s','')}" >
         奖学金类型:
@@ -46,7 +46,7 @@
                 <td>{$vo.depart_name}</td>
                 <td>{$vo.class_id}</td>
                 <td>{$vo.stu_name}</td>
-                <td>{$vo.stu_id}</td>
+                <td>{$vo.stu_no}</td>
                 <td>{$vo.type_name}</td>
                 <td><a href="{:U('ScApprove/check',array('id'=>$vo['id']))}">查看</a></td>
                 <td>
