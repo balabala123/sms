@@ -16,40 +16,37 @@ class ScApproveController extends AdminbaseController {
 //        $stu_id =get_current_admin_id();
 //        $stu_id = get_current_userid();
 //        print_r($stu_id);die;
-        $where['disabled'] = 0;
-
+        $where['cmf_reward.disabled'] = 0;
+        $where['cmf_reward.status'] = 0;
         //搜索
         $type_name = trim(I('request.type_name'));
+        $stu_name = trim(I('request.stu_name'));
+        $stu_id = trim(I('request.stu_id'));
         if($type_name || ($type_name == 0 && $type_name != '')){
-            $where['type_name'] = array('like',"%$type_name%");
+            $where['cmf_reward.type_name'] = array('like',"%$type_name%");
         }
-
+        if($stu_name || ($stu_name == 0 && $stu_name != '')){
+            $where['stu_name'] = array('like',"%$stu_name%");
+        }
+        if($stu_id || ($stu_id == 0 && $stu_id != '')){
+            $where['cmf_reward.stu_id'] = array('like',"%$stu_id%");
+        }
         //分页
         $count=$this->model->where($where)->count();
         $page = $this->page($count, 8);
         $this->assign("page", $page->show('Admin'));
 
-        $Reward_msg = M('Reward_msg');
-
-        $res = $this->model->limit($page->firstRow , $page->listRows)->where($where)->select();
+        $res = $this->model->field('stu_name,cmf_reward.id,cmf_reward.type_name,cmf_reward.stu_id')
+                            ->join('cmf_student on cmf_student.stu_id = cmf_reward.stu_id')
+                            ->limit($page->firstRow , $page->listRows)
+                            ->where($where)
+                            ->select();
+//        print_r($this->model->getLastsql());die;
         foreach($res as $k=>$v){
             $data[$k]['id'] = $v['id'];
+            $data[$k]['stu_name'] = $v['stu_name'];
+            $data[$k]['stu_id'] = $v['stu_id'];
             $data[$k]['type_name'] = $v['type_name'];
-
-            $sel = $Reward_msg->field('money')->where(array('type_name'=>$v['type_name']))->find();
-            $data[$k]['money'] = $sel['money'];
-
-            $data[$k]['sc_note'] = $v['sc_note'];
-            $data[$k]['create_time'] = date("Y/m/d H:i",$v['create_time']);
-            if($v['status'] == 0){
-                $data[$k]['status'] = '申请中';
-            }
-            if($v['status'] == 1){
-                $data[$k]['status'] = '审批通过';
-            }
-            if($v['status'] == 2){
-                $data[$k]['status'] = '审批拒绝';
-            }
 
         }
 
@@ -57,53 +54,34 @@ class ScApproveController extends AdminbaseController {
         $this -> display();
     }
 
-    public function add(){
-        $Reward_msg = M("Reward_msg");
-        $sel = $Reward_msg->field('type_name')->select();
-        foreach ($sel as $v){
-            $type[] = $v['type_name'];
-        }
-//        print_r($type);die;
-        $this->assign("type",$type);
+    public function check(){
+        $id = I("get.id",0,'intval');
+        $sel = $this->model->field('sc_note')->where(array('id'=>$id))->find();
+        $sc_note = $sel['sc_note'];
+        $this->assign('sc_note',$sc_note);
         $this->display();
     }
 
-    public function add_post(){
-        $data = I('post.');
-        $stu_id = $_COOKIE['stu_id']=8;
-//        print_r($post);die;
-        $data['create_time'] = time();
-        $data['stu_id'] = $stu_id;
+    public function pass(){
+        //通过
+        $id = I("get.id",0,'intval');
 
-
-//        print_r($data);die;
-        if ($this->model->create($data)!==false) {
-            if ($this->model->add()!==false) {
-                $this->success('提交成功!', U('StuSc/index'));
-            } else {
-                $this->error('提交失败!');
-            }
-        } else {
-            $this->error($this->model->getError());
+        if ($this->model->where(array('id'=>$id))->save(array('status'=>1))!==false) {
+            $this->success('成功！');
+        }else{
+            $this->error('失败！');
         }
-
 
     }
 
-    public function remove_add(){
-        //取消申请
+    public function rebut(){
+        //驳回
         $id = I("get.id",0,'intval');
-        //判断状态是否为审批通过
-        $status = $this->model->field('status')->where(array('id'=>$id))->find();
 
-        if($status['status'] == 1){
-            $this->error('审批已经通过，无法取消!');
+        if ($this->model->where(array('id'=>$id))->save(array('status'=>2))!==false) {
+            $this->success('成功！');
         }else{
-            if ($this->model->where(array('id'=>$id))->save(array('disabled'=>1))!==false) {
-                $this->success('取消成功');
-            } else {
-                $this->error('取消失败');
-            }
+            $this->error('失败！');
         }
 
     }
