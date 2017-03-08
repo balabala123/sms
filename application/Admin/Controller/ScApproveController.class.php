@@ -19,9 +19,21 @@ class ScApproveController extends AdminbaseController {
         $where['cmf_reward.disabled'] = 0;
         $where['cmf_reward.status'] = 0;
         //搜索
+        $xi_id = trim(I('request.xi_id'));
+        $depart_id = trim(I('request.depart_id'));
+        $class_id = trim(I('request.class_id'));
         $type_name = trim(I('request.type_name'));
         $stu_name = trim(I('request.stu_name'));
         $stu_id = trim(I('request.stu_id'));
+        if($xi_id != ''){
+            $where['cmf_reward.xi_id'] = array('like',"%$xi_id%");
+        }
+        if($type_name || ($type_name == 0 && $type_name != '')){
+            $where['cmf_reward.type_name'] = array('like',"%$type_name%");
+        }
+        if($type_name || ($type_name == 0 && $type_name != '')){
+            $where['cmf_reward.type_name'] = array('like',"%$type_name%");
+        }
         if($type_name || ($type_name == 0 && $type_name != '')){
             $where['cmf_reward.type_name'] = array('like',"%$type_name%");
         }
@@ -36,8 +48,10 @@ class ScApproveController extends AdminbaseController {
         $page = $this->page($count, 8);
         $this->assign("page", $page->show('Admin'));
 
-        $res = $this->model->field('stu_name,cmf_reward.id,cmf_reward.type_name,cmf_reward.stu_id')
+        $res = $this->model->field('stu_name,cmf_xi.xi_name,cmf_depart.depart_name,class_id,cmf_reward.id,cmf_reward.type_name,cmf_reward.stu_id')
                             ->join('cmf_student on cmf_student.stu_id = cmf_reward.stu_id')
+                            ->join('cmf_xi on cmf_xi.xi_id = cmf_student.xi_id')
+                            ->join('cmf_depart on cmf_depart.depart_id = cmf_student.depart_id')
                             ->limit($page->firstRow , $page->listRows)
                             ->where($where)
                             ->select();
@@ -45,6 +59,9 @@ class ScApproveController extends AdminbaseController {
         foreach($res as $k=>$v){
             $data[$k]['id'] = $v['id'];
             $data[$k]['stu_name'] = $v['stu_name'];
+            $data[$k]['depart_name'] = $v['depart_name'];
+            $data[$k]['class_id'] = $v['class_id'];
+            $data[$k]['xi_name'] = $v['xi_name'];
             $data[$k]['stu_id'] = $v['stu_id'];
             $data[$k]['type_name'] = $v['type_name'];
 
