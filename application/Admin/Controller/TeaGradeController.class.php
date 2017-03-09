@@ -23,11 +23,14 @@
             $this->classmdl = M('class');
             $this->grademdl = M('grade');
             $this->pageNum = 1;
+            $ID = $_SESSION['ADMIN_ID'];
+            $users = M('users');
+            $user_id = $users->where('id='.$ID)->field('rele_id')->find();
+            $this->id = $user_id['rele_id'];
         }
 
         public function index() {
-            $id = 25;
-            $data = $this->model->where('teacher_id='.$id)->field('class_id,subject_id')->find();
+            $data = $this->model->where('teacher_id='.$this->id)->field('class_id,subject_id')->find();
             $class_id = explode('-',$data['class_id']);
             $where['class_id'] = array('in',$class_id);
             $class = $this->classmdl->where($where)->field('class_no,class_id')->select();
@@ -73,8 +76,7 @@
                 foreach ($this->params['grade'] as $k => $item) {
                     $data[$k]['grade'] = $item;
                 }
-                $id = 25;
-                $subject = $this->model->where('teacher_id=' . $id)->field('subject_id')->find();
+                $subject = $this->model->where('teacher_id=' . $this->id)->field('subject_id')->find();
                 foreach ($data as $k => $v) {
                     $data[$k]['subject_id'] = $subject['subject_id'];
                 }
@@ -99,8 +101,7 @@
                 foreach ($this->params['grade_id'] as $k => $item) {
                     $data[$k]['grade_id'] = $item;
                 }
-                $id = 25;
-                $subject = $this->model->where('teacher_id=' . $id)->field('subject_id')->find();
+                $subject = $this->model->where('teacher_id=' . $this->id)->field('subject_id')->find();
                 foreach ($data as $k => $v) {
                     $data[$k]['subject_id'] = $subject['subject_id'];
                 }
@@ -126,8 +127,7 @@
         public function add_grade() {
             !isset($this->params['stu_id']) && $this->error('学生ID为空');
             !isset($this->params['grade']) && $this->error('请填写学生成绩');
-            $id = 25;
-            $subject = $this->model->where('teacher_id=' . $id)->field('subject_id')->find();
+            $subject = $this->model->where('teacher_id=' . $this->id)->field('subject_id')->find();
             $data['subject_id'] = $subject['subject_id'];
             $data['stu_id'] = $this->params['stu_id'];
             $data['grade'] = $this->params['grade'];

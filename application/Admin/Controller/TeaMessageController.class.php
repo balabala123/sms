@@ -14,14 +14,14 @@
             $this->submdl = D('subject');
             $this->classmdl = D('class');
             $this->params = I('params.');
+            $ID = $_SESSION['ADMIN_ID'];
+            $users = M('users');
+            $user_id = $users->where('id='.$ID)->field('rele_id')->find();
+            $this->id = $user_id['rele_id'];
         }
 
         public function index() {
-            $data = sp_get_current_user();
-            echo "<pre>";
-            print_r($_SESSION);
-            exit;
-            $data = $this->model->where('teacher_id='.$id)->field('teacher_name,teacher_no,subject_id,class_id')->find();
+            $data = $this->model->where('teacher_id='.$this->id)->field('teacher_name,teacher_no,subject_id,class_id')->find();
             $subject = $this->submdl->where('subject_id='.$data['subject_id'])->field('subject_name')->find();
             $data['subject'] = $subject['subject_name'];
             $class_id = explode('-',$data['class_id']);
