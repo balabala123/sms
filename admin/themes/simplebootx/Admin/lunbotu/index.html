@@ -28,7 +28,7 @@
             <foreach name='src' item='v'>
                 <li class="li">
                     <div style="width:150px; height:150px;">
-                        <img src="__PUBLIC__/upload/{$v['image_src']}" draggable="true">
+                        <img src="{$v['image_src']}" draggable="true" width="100px" height="100px">
                     </div>
                     <a href="{:U('Lunbotu/delete',array('image_id'=>$v['image_id']))}" class="operation" name="del">删除</a>
             </foreach>

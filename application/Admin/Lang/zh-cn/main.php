@@ -1,7 +1,7 @@
 <?php
 return array(
 	'SYSTEM_INFORMATIONS' => '系统信息',
-	'SYSTEM_NOTIFICATIONS' => '系统通知',
+	'SYSTEM_NOTIFICATIONS' => '欢迎登陆学生成绩管理系统',
 	'INITIATE_TEAM' => '发起团队',
 	'CONTRIBUTORS' => '贡献者',
 	'CONTACT_EMAIL' => '联系邮箱',

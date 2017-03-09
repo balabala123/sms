@@ -91,6 +91,30 @@
             $date = date("Y");
             $data['teacher_pwd'] = sp_password($date.$data['teacher_no']);
             if ($this->model->data($data)->add()){
+                $id = $this->model->where('teacher_no='.$data['teacher_no'])->field('teacher_id')->find();
+                if($id['teacher_id'] <= 9) {
+                    $logn = '0'.$id['teacher_id'];
+                }else{
+                    $logn = $id['teacher_id'];
+                }
+                $user_logn = M('users');
+                $data_logn['user_login'] = $date.$logn;
+                $data_logn['rele_id'] = $id['teacher_id'];
+                $data_logn['user_pass'] = $data['teacher_pwd'];
+                $data_logn['user_email'] = '823650031@qq.com';
+                if($user_logn->data($data_logn)->add()) {
+                    $id = $user_logn->where('user_login='.$data_logn['user_login'])->field('id')->find();
+                    $role_mdl = M('role_user');
+                    $data_role['role_id'] = 3;
+                    $data_role['user_id'] = $id['id'];
+                    if($role_mdl->data($data_role)->add()) {
+                        $this->success("添加成功", U('Teamm/add'));
+                    }else{
+                        $this->error("添加角色用户失败");
+                    }
+                }else{
+                    $this->error("添加用户失败");
+                }
                 $this->success("添加成功", U('Teamm/add'));
             } else {
                 $this->error("添加失败");

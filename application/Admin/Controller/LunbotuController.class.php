@@ -52,7 +52,7 @@
                        /* $image->open("SMS/public/upload/".$v['savename']);
                         // 生成一个固定大小为150*150的缩略图并保存为thumb.jpg
                         $image->thumb(150, 150,\Think\Image::IMAGE_THUMB_FIXED);*/
-                        $this->model->add(array('image_src'=>$v['savename']));
+                        $this->model->add(array('image_src'=>'/sms/public/upload/'.$v['savename']));
                     }
                     $this->success('上传成功！');
                 }

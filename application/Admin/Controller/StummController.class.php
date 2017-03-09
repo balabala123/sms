@@ -66,6 +66,7 @@
         //添加学生
         public function add_post() {
             !isset($this->params['stu_name']) && $this->error('请填写学生姓名');
+            !isset($this->params['stu_pwd']) && $this->error('请填写学生身份证号');
             !isset($this->params['stu_xi']) && $this->error('请选择院系');
             !isset($this->params['stu_dep']) && $this->error('请选择专业');
             !isset($this->params['stu_class']) && $this->error('请选择班级');
@@ -73,6 +74,7 @@
             $data['xi_id'] = $this->params['stu_xi'];
             $data['depart_id'] = $this->params['stu_dep'];
             $data['class_id'] = $this->params['stu_class'];
+            $data['stu_pwd'] = sp_password($this->params['stu_pwd']);
             //学号start
             $class_no = $this->classmdl->where('class_id='.$data['class_id'])->field('class_no')->find();
             $stu_no = $this->model->where('class_id='.$data['class_id'])->max(stu_no);
@@ -85,11 +87,34 @@
                     $stu_no = '0' . $stu_no;
                 }
             }
-            $data['stu_pwd'] = sp_password($class_no['class_no']. $stu_no);
             $data['stu_no'] = $class_no['class_no']. $stu_no;
             //end
             if ($this->model->data($data)->add()){
-            $this->success("添加成功", U('Stumm/add'));
+                $id = $this->model->where('stu_no='.$data['stu_no'])->field('stu_id')->find();
+                if($id['stu_id'] <= 9) {
+                    $logn = '0'.$id['stu_id'];
+                }else{
+                    $logn = $id['stu_id'];
+                }
+                $date = date('Y');
+                $user_logn = M('users');
+                $data_logn['user_login'] = $date.$logn;
+                $data_logn['rele_id'] = $id['stu_id'];
+                $data_logn['user_pass'] = $data['stu_pwd'];
+                $data_logn['user_email'] = '823650031@qq.com';
+                if($user_logn->data($data_logn)->add()) {
+                    $id = $user_logn->where('user_login='.$data_logn['user_login'])->field('id')->find();
+                    $role_mdl = M('role_user');
+                    $data_role['role_id'] = 2;
+                    $data_role['user_id'] = $id['id'];
+                    if($role_mdl->data($data_role)->add()) {
+                        $this->success("添加成功", U('Stumm/add'));
+                    }else{
+                        $this->error("添加角色用户失败");
+                    }
+                }else{
+                    $this->error("添加用户失败");
+                }
             } else {
                 $this->error("添加失败");
             }

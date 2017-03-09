@@ -17,7 +17,10 @@
         }
 
         public function index() {
-            $id = 25;
+            $data = sp_get_current_user();
+            echo "<pre>";
+            print_r($_SESSION);
+            exit;
             $data = $this->model->where('teacher_id='.$id)->field('teacher_name,teacher_no,subject_id,class_id')->find();
             $subject = $this->submdl->where('subject_id='.$data['subject_id'])->field('subject_name')->find();
             $data['subject'] = $subject['subject_name'];
