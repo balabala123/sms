@@ -1,0 +1,21 @@
+<admintpl file="header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <h2>个人信息展示：</h2>
+    <table class="table table-hover table-bordered table-list" style="width:60%;">
+       <tr>
+           <th>学生学号</th>
+           <th>学生姓名</th>
+       </tr>
+        <foreach name="list" item="vo">
+        <tr>
+                <td>{$vo.stu_no}</td>
+                <td><a href="{:U('StuGrade/index',array('id'=>$vo['stu_id']))}">{$vo.stu_name}</a></td>
+        </tr>
+        </foreach>
+    </table>
+</div>
+</body>
+<script src="__PUBLIC__/js/common.js"></script>
+</html>

@@ -22,34 +22,34 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li  class="active"><a href="{:U('Stumm/index')}">学生信息</a></li>
-        <li><a href="{:U('Stumm/add')}">添加</a></li>
+        <li  class="active"><a href="{:U('Messagemm/index')}">班主任信息</a></li>
+        <li><a href="{:U('Messagemm/add')}">添加</a></li>
     </ul>
-    <form  method="post" action="{:U('Stumm/index')}">
-        学生姓名:
-        <input type="text" name="stu_name" style="width: 100px;" value="{:I('request.stu_name/s','')}" placeholder="请填写学生姓名">
+    <form  method="post" action="{:U('Messagemm/index')}">
+        班主任姓名:
+        <input type="text" name="ban_name" style="width: 150px;" value="{:I('request.ban_name/s','')}" placeholder="请填写班主任姓名">
+        班主任工号：
+        <input type="text" name="ban_no" style="width: 150px;" value="{:I('request.ban_no/s','')}" placeholder="请填写班主任工号">
         所属院系:
-        <select style="width: 223px;" name="stu_xi" id="xi"  onchange="change()">
+        <select style="width: 223px;" name="ban_xi" id="xi"  onchange="change()">
             <option disabled selected>--请选择院系--</option>
             <volist name="xi" id="vo">
                 <option value="{$vo.xi_id}">{$vo.xi_name}</option>
             </volist>
         </select>
         所属专业:
-        <select style="width: 223px;" name="stu_dep" id="depart"   onchange="change_two()">
+        <select style="width: 223px;" name="ban_dep" id="depart"   onchange="change_two()">
             <option disabled selected>--请选择专业--</option>
-        </select>
-        所属班级:
-        <select style="width: 223px;" name="stu_class" id="class">
-            <option disabled selected>--请选择班级--</option>
         </select><br>
+        班级号:
+        <input type="text" name="class_no" style="width: 150px;" value="{:I('request.class_no/s','')}" placeholder="请输入班级号">
         <input type="submit" class="btn btn-primary" value="搜索" />
-        <a class="btn btn-danger" href="{:U('Stumm/index')}">清空</a>
+        <a class="btn btn-danger" href="{:U('banmm/index')}">清空</a>
     </form>
 
     <!--修改start-->
     <div id="up_div">
-        <center>  <h4>请修改学生信息</h4>
+        <center>  <h4>请修改班主任信息</h4>
             <p>姓名：<input type="text" name="name" class="form-control" required id="up_name"></p>
             <p>院系：<select name="depart" class="ft" id="up_xi" onchange="up_change()">
                 <foreach name='xi' item='v'>
@@ -65,15 +65,15 @@
             </select></p>
             <input type="hidden" name="id" id="up_id">
             <input type="button" value="修改" id="up_sub" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="{:U('stumm/index')}"> <button class="btn btn-primary">返回</button></a></center>
+            <a href="{:U('Messagemm/index')}"> <button class="btn btn-primary">返回</button></a></center>
 
         <center><span id="up_mes" style="color: red;padding-top: 10px"> </span></center>
     </div>
     <!--修改end-->
-    <form class="js-ajax-form" action="{:U('stumm/delete')}" method="post" id="form2">
+    <form class="js-ajax-form" action="{:U('Messagemm/delete')}" method="post" id="form2">
         <input type="hidden" name="style" value="moment">
         <div class="table-actions">
-            <button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Stumm/delete')}"
+            <button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Messagemm/delete')}"
                     data-subcheck="true" data-msg="{:L('DELETE_CONFIRM_MESSAGE')}">{:L('DELETE')}
             </button>
         </div>
@@ -82,11 +82,11 @@
             <tr>
                 <th><label><input type="checkbox" class="js-check-all" data-direction="x"
                                   data-checklist="js-check-x"></label></th>
-                <th>学生姓名</th>
-                <th>学生学号</th>
-                <th>院系</th>
-                <th>专业</th>
-                <th>班级</th>
+                <th>班主任姓名</th>
+                <th>班主任工号</th>
+                <th>所属院系</th>
+                <th>所属专业</th>
+                <th>管理班级</th>
                 <th>{:L("ACTIONS")}</th>
             </tr>
             </thead>
@@ -96,18 +96,18 @@
                     <td>
                         <label class="checkbox inline">
                             <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x"
-                                   name="ids[]" value="{$vo.stu_id}" title="ID:{$vo.stu_id}">
+                                   name="ids[]" value="{$vo.ban_id}" title="ID:{$vo.ban_id}">
                         </label>
                     </td>
 
-                    <td>{$vo.stu_name}</td>
-                    <td>{$vo.stu_no}</td>
+                    <td>{$vo.ban_name}</td>
+                    <td>{$vo.ban_no}</td>
                     <td>{$vo.xi}</td>
                     <td>{$vo.depart}</td>
                     <td>{$vo.class}</td>
                     <td>
-                        <a class="js-ajax-delete" href="{:U('Stumm/delete',array('stu_id'=>$vo['stu_id']))}">{:L('DELETE')}</a>
-                        <a class="update">修改<span hidden>{$vo['stu_id']}</span></a>
+                        <a class="js-ajax-delete" href="{:U('Messagemm/delete',array('ban_id'=>$vo['ban_id']))}">{:L('DELETE')}</a>
+                        <a class="update">修改<span hidden>{$vo['ban_id']}</span></a>
 
                     </td>
                 </tr>
@@ -117,11 +117,11 @@
             <tr>
                 <th><label><input type="checkbox" class="js-check-all" data-direction="x"
                                   data-checklist="js-check-x"></label></th>
-                <th>学生姓名</th>
-                <th>学生学号</th>
-                <th>院系</th>
-                <th>专业</th>
-                <th>班级</th>
+                <th>班主任姓名</th>
+                <th>班主任工号</th>
+                <th>所属院系</th>
+                <th>所属专业</th>
+                <th>管理班级</th>
                 <th>{:L("ACTIONS")}</th>
             </tr>
             </tfoot>
@@ -129,7 +129,7 @@
         <div class="pagination">{$page}</div>
 
         <div class="table-actions">
-            <button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Stumm/delete')}"
+            <button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Messagemm/delete')}"
                     data-subcheck="true" data-msg="{:L('DELETE_CONFIRM_MESSAGE')}">{:L('DELETE')}
             </button>
             <!--<button class="btn btn-primary btn-small " type="button">{:L('DATA_IMPORT')}</button>-->
@@ -149,7 +149,7 @@
         $("#depart").append("<option disabled selected value=0>--请选择专业--</option>");
         $.ajax({
                    type: "POST",
-                   url:"{:U('Stumm/change')}",
+                   url:"{:U('Messagemm/change')}",
                    dataType:"json",
                    data: {
                        'xi_id': xi_id
@@ -173,7 +173,7 @@
         $("#class").append("<option selected disabled value=0>--请选择班级--</option>");
         $.ajax({
                    type: "POST",
-                   url:"{:U('Stumm/change_two')}",
+                   url:"{:U('Messagemm/change_two')}",
                    dataType:"json",
                    data: {
                        'depart_id': depart_id
@@ -194,18 +194,18 @@
         var span = $(this).find("span").html();
         $.ajax({
                    type: "POST",
-                   url:"{:U('Stumm/get_data')}",
+                   url:"{:U('Messagemm/get_data')}",
                    dataType:"json",
                    data: {
-                       'stu_id': span
+                       'ban_id': span
                    },
                    success: function(data){
                        //console.log(data);
-                       $('#up_name').val(data.stu_name);
-                       $('#up_id').val(data.stu_id);
+                       $('#up_name').val(data.ban_name);
+                       $('#up_id').val(data.ban_id);
                        $('#up_xi').val(data.xi_id);
                        up_change();
-                      // alert(data.depart_id);
+                       // alert(data.depart_id);
                        $('#up_depart').val(data.depart_id);
                        $('#up_class').val(data.class_id);
                        $('#up_div').slideToggle("slow");
@@ -219,7 +219,7 @@
         $("#up_depart").text(" ");
         $.ajax({
                    type: "POST",
-                   url: "{:U('Stumm/change')}",
+                   url: "{:U('Messagemm/change')}",
                    dataType: "json",
                    data: {
                        'xi_id': xi_id
@@ -242,7 +242,7 @@
         $("#up_class").text(' ');
         $.ajax({
                    type: "POST",
-                   url:"{:U('Stumm/change_two')}",
+                   url:"{:U('Messagemm/change_two')}",
                    dataType:"json",
                    data: {
                        'depart_id': depart_id
@@ -259,7 +259,7 @@
                }).responseText;
     }
 
-//修改
+    //修改
     $("#up_sub").on("click",function(){
         name = $('#up_name').val();
         xi = $('#up_xi').val();
@@ -268,11 +268,11 @@
         id = $('#up_id').val();
         $.ajax({
                    type: "POST",
-                   url:"{:U('Stumm/up_data')}",
+                   url:"{:U('Messagemm/up_data')}",
                    dataType:"json",
                    data: {
-                       'stu_id': id,
-                       'stu_name': name,
+                       'ban_id': id,
+                       'ban_name': name,
                        'xi_id': xi,
                        'depart_id': depart,
                        'class_id': class1,

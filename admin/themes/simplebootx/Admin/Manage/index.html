@@ -1,0 +1,31 @@
+<admintpl file="header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <h2>个人信息展示：</h2>
+    <table class="table table-hover table-bordered table-list" style="width:60%;">
+        <tr>
+            <th>工号</th>
+            <td>{$list.ban_no}</td>
+        </tr>
+        <tr>
+            <th>姓名</th>
+            <td>{$list.ban_name}</td>
+        </tr>
+        <tr>
+            <th>所属院系</th>
+            <td>{$list.xi}</td>
+        </tr>
+        <tr>
+            <th>所属专业</th>
+            <td>{$list.depart}</td>
+        </tr>
+        <tr>
+            <th>教授班级</th>
+            <td><a href="{:U('Classmsg/index',array('id'=>$list['class_id']))}">{$list.class_no}</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+<script src="__PUBLIC__/js/common.js"></script>
+</html>
