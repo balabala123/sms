@@ -7,8 +7,9 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-       <!-- <li  class="active"><a href="{:U('Teamm/index')}">教师信息</a></li>
-        <li><a href="{:U('Teamm/add')}">添加</a></li>-->
+        <volist name="class" id="vo">
+           <li <if condition="$class_id eq $vo['class_id']"> class="active"</if>> <a href="{:U('TeaGrade/index',array('id'=>$vo['class_id']))}">{$vo.class_no}</a></li>
+        </volist>
     </ul>
     <form  method="post" action="{:U('TeaGrade/grade')}">
         <button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('TeaGrade/grade')}"
