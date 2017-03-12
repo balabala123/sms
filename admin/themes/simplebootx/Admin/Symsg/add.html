@@ -1,0 +1,153 @@
+<admintpl file="header" />
+
+<style>
+
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:U('Symsg/index')}">助学金信息</a></li>
+        <li class="active"><a href="{:U('Symsg/add')}">添加</a></li>
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Symsg/add_post')}">
+        <fieldset>
+            <div class="control-group ">
+                <label class="control-label">添加类型:</label>
+                <div class="controls form-group">
+                    <input type="text" name="type_name">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group ">
+                <label class="control-label">金额:</label>
+                <div class="controls form-group">
+                    <input type="text" name="money">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group ">
+                <label class="control-label">名额(每班):</label>
+                <div class="controls form-group">
+                    <input type="text" name="quota">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group ">
+                <label class="control-label">申请时限:</label>
+                <div class="controls form-group">
+                    <input type="text" class="js-datetime" value="{:date('Y-m-d H:i:s',time())}" name="start_time">
+                    至 <input type="text" class="js-datetime" value="{:date('Y-m-d H:i:s',time())}" name="end_time">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <a class="btn" href="{:U('Symsg/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".js-ajax-form").bootstrapValidator({
+            message: '输入的值无效!',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                type_name: {
+                    message: '输入的值无效!',
+                    validators: {
+                        notEmpty: {
+                            message: '请填写类型名称！'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 30,
+                            message: '不符合长度限制（1-30）'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\u4e00-\u9fa5\-\(\)\（\）]+$/,
+                            message: '非法字符'
+                        }
+                    }
+                },
+                money:{
+                    message: '输入的值无效!',
+                    notEmpty: {
+                        message: '请填写金额！'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 6,
+                        message: '不符合长度限制（1-6）'
+                    },
+                    validators: {
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '请输入数字'
+                        }
+                    }
+                },
+                quota:{
+                    message: '输入的值无效!',
+                    notEmpty: {
+                        message: '请填写名额！'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 4,
+                        message: '不符合长度限制（1-4）'
+                    },
+                    validators: {
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '请输入数字'
+                        }
+                    }
+                },
+                start_time:{
+                    message: '输入的值无效!',
+                    notEmpty: {
+                        message: '请填写开始时间！'
+                    },
+                },
+                end_time:{
+                    message: '输入的值无效!',
+                    notEmpty: {
+                        message: '请填写结束时间！'
+                    },
+                },
+
+            }
+        });
+
+        var form = $(".js-ajax-form");
+        form.submit(function(ev){ev.preventDefault();});
+
+        $('.js-ajax-submit').on("click", function(e){e.preventDefault();
+            var bootstrapValidator = form.data('bootstrapValidator');
+
+            if (bootstrapValidator) {
+                // 修复记忆的组件不验证
+                bootstrapValidator.validate();
+
+                if (!bootstrapValidator.isValid()) {
+
+                    return false;
+                }else{
+                    //$('.js-ajax-submit').removeAttr('disabled');
+                    form.submit();
+                }
+
+            }
+
+        });
+    });
+</script>
+</body>
+</html>

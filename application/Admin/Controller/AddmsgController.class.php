@@ -2,13 +2,13 @@
 namespace Admin\Controller;
 use Common\Controller\AdminbaseController;
 
-class ScmsgController extends AdminbaseController {
+class AddmsgController extends AdminbaseController {
     protected $model;
     private $params;
 
     public function _initialize() {
         parent::_initialize();
-        $this->model = D('Reward_msg');
+        $this->model = D('Add_point_msg');
         $this->params = I('params.');
     }
 
@@ -17,14 +17,14 @@ class ScmsgController extends AdminbaseController {
 
         //搜索
         $type_name = trim(I('request.type_name'));
-        $money = trim(I('request.money'));
+        $point = trim(I('request.point'));
 
         if($type_name != ''){
             $where['type_name'] = array('like',"%$type_name%");
         }
 
-        if($money != ''){
-            $where['money'] = array('like',"%$money%");
+        if($point != ''){
+            $where['point'] = array('like',"%$point%");
         }
 
         //分页
@@ -37,8 +37,7 @@ class ScmsgController extends AdminbaseController {
         foreach($res as $k=>$v){
             $data[$k]['type_id'] = $v['type_id'];
             $data[$k]['type_name'] = $v['type_name'];
-            $data[$k]['money'] = $v['money'];
-            $data[$k]['quota'] = $v['quota'];
+            $data[$k]['point'] = $v['point'];
             $data[$k]['start_time'] = date("Y/m/d H:i",$v['start_time']);
             $data[$k]['end_time'] = date("Y/m/d H:i",$v['end_time']);
         }
@@ -54,8 +53,7 @@ class ScmsgController extends AdminbaseController {
     public function add_post(){
         $post = I("post.");
         $data['type_name'] = $post['type_name'];
-        $data['money'] = $post['money'];
-        $data['quota'] = $post['quota'];
+        $data['point'] = $post['point'];
         $data['start_time'] = strtotime($post['start_time']);
         $data['end_time'] = strtotime($post['end_time']);
 
@@ -77,8 +75,7 @@ class ScmsgController extends AdminbaseController {
 
         $data['type_id'] = $res['type_id'];
         $data['type_name'] = $res['type_name'];
-        $data['money'] = $res['money'];
-        $data['quota'] = $res['quota'];
+        $data['point'] = $res['point'];
         $data['start_time'] = date('Y-m-d H:i:s',$res['start_time']);
         $data['end_time'] = date('Y-m-d H:i:s',$res['end_time']);
 
@@ -92,15 +89,14 @@ class ScmsgController extends AdminbaseController {
         $id = I('post.id',0,'intval');
         $data=$this->model->where(array('type_id'=>$id))->find();
         $data['type_name'] = $post['type_name'];
-        $data['money'] = $post['money'];
-        $data['quota'] = $post['quota'];
+        $data['point'] = $post['point'];
         $data['start_time'] = strtotime($post['start_time']);
         $data['end_time'] = strtotime($post['end_time']);
 
 
         if($this->model->create($data) !== false){
             if($this->model->save() !== false){
-                $this->success('保存成功！' ,U('Scmsg/index'));
+                $this->success('保存成功！' ,U('Addmsg/index'));
             }else{
                 $this->error('保存失败！');
             }

@@ -2,8 +2,8 @@
 
 <style>
     .thtd{
-        width:150px;
-        font-size: 16px;
+        width:130px;
+        font-size: 18px;
         font-weight: bold;
     }
     .form-required{
@@ -22,10 +22,15 @@
             <tr>
                 <td class="thtd">奖学金类型</td>
                 <td>
-                    <select name="type_name" >
+                    <select name="type_name" style="color: black;width:300px;">
                         <option>请选择</option>
                         <foreach name="type" item="vo">
-                            <option>{$vo}</option>
+                            <if condition="$vo['sheng'] eq 0">
+                                <option disabled>{$vo.type_name}(还有{$vo.sheng}个名额)</option>
+                            <else />
+                                <option>{$vo.type_name}(还有{$vo.sheng}个名额)</option>
+                            </if>
+
                         </foreach>
                         <!--<option>其他(请在备注中说明)</option>-->
                     </select>
@@ -43,11 +48,12 @@
 
         </table>
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary js-ajax-submit">提交</button>
+            <button type="submit" class="btn btn-primary js-ajax-submit delt">提交</button>
             <a class="btn" href="{:U('StuSc/index')}">返回</a>
         </div>
     </form>
 </div>
 <script src="__PUBLIC__/js/common.js"></script>
+
 </body>
 </html>

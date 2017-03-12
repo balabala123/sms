@@ -22,10 +22,14 @@
             <tr>
                 <td class="thtd">助学金类型</td>
                 <td>
-                    <select name="type_name" >
+                    <select name="type_name" style="color:black;width:300px;">
                         <option>请选择</option>
                         <foreach name="type" item="vo">
-                            <option>{$vo}</option>
+                            <if condition="$vo['sheng'] eq 0">
+                                <option disabled>{$vo.type_name}(还有{$vo.sheng}个名额)</option>
+                                <else />
+                                <option>{$vo.type_name}(还有{$vo.sheng}个名额)</option>
+                            </if>
                         </foreach>
                         <!--<option>其他(请在备注中说明)</option>-->
                     </select>

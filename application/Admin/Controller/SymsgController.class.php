@@ -2,13 +2,13 @@
 namespace Admin\Controller;
 use Common\Controller\AdminbaseController;
 
-class ScmsgController extends AdminbaseController {
+class SymsgController extends AdminbaseController {
     protected $model;
     private $params;
 
     public function _initialize() {
         parent::_initialize();
-        $this->model = D('Reward_msg');
+        $this->model = D('Help_msg');
         $this->params = I('params.');
     }
 
@@ -100,7 +100,7 @@ class ScmsgController extends AdminbaseController {
 
         if($this->model->create($data) !== false){
             if($this->model->save() !== false){
-                $this->success('保存成功！' ,U('Scmsg/index'));
+                $this->success('保存成功！' ,U('Symsg/index'));
             }else{
                 $this->error('保存失败！');
             }

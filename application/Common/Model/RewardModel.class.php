@@ -20,7 +20,8 @@ class RewardModel extends CommonModel {
      */
     public function checkAction($data) {
         //检查是否重复添加
-        $find = $this->where(array('type_name'=>$data))->find();
+        $ty = preg_replace("/\(.*\)/", '', $data);
+        $find = $this->where(array('type_name'=>$ty,'disabled'=>0))->find();
         if ($find) {
             return false;
         }

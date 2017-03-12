@@ -7,65 +7,60 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="{:U('StuSy/index')}">助学金申请记录</a></li>
-        <li ><a href="{:U('StuSy/add')}">申请</a></li>
+        <li class="active"><a href="{:U('Symsg/index')}">助学金信息</a></li>
+        <li ><a href="{:U('Symsg/add')}">添加</a></li>
     </ul>
-    <form class="well form-search" method="post" action="{:U('StuSy/index')}">
+    <form class="well form-search" method="post" action="{:U('Symsg/index')}">
         助学金类型:
         <input type="text" name="type_name" style="width: 120px;" value="{:I('request.type_name/s','')}" >
+        金额:
+        <input type="text" name="money" style="width: 120px;" value="{:I('request.money/s','')}" >
         <input type="submit" class="btn btn-primary" value="搜索" />
-        <a class="btn btn-danger" href="{:U('StuSy/index')}">清空</a>
+        <a class="btn btn-danger" href="{:U('Symsg/index')}">清空</a>
     </form>
 
-    <table class="table table-hover table-bordered table-list">
-        <thead>
-        <tr>
-            <th width="150">助学金类型</th>
-            <th width="100">助学金金额</th>
-            <th width="100">申请时间</th>
-            <th width="80">状态</th>
-            <th width="50">操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <foreach name="data" item="vo">
+    <form method="post" class="js-ajax-form" action="{:U('Symsg/index')}">
+        <div class="table-actions">
+            <button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Symsg/delete')}" data-subcheck="true" data-msg="您确定删除吗？">{:L('DELETE')}</button>
+        </div>
+
+        <table class="table table-hover table-bordered table-list" >
+            <thead>
             <tr>
-                <td>{$vo.type_name}</td>
-                <td>{$vo.money}</td>
-                <td>{$vo.create_time}</td>
-                <if condition="$vo['status'] eq '申请中'">
-                    <td style="color:black;font-weight: bold;font-size: 13px;">{$vo.status}</td>
-                    <elseif condition="$vo['status'] eq '审批通过'" />
-                    <td style="color:green;font-weight: bold;font-size: 13px;">{$vo.status}</td>
-                    <elseif condition="$vo['status'] eq '审批拒绝'" />
-                    <td style="color:red;font-weight: bold;font-size: 13px;">{$vo.status}</td>
-                    <elseif condition="$vo['status'] eq '已取消'" />
-                    <td style="color:orange;font-weight: bold;font-size: 13px;">{$vo.status}</td>
-                </if>
-                <td>
-                    <if condition="$vo['status'] neq '已取消'">
-                        <a href="{:U('StuSy/remove_add',array('id'=>$vo['id']))}" class="rem_sc">取消申请</a>
-                    </if>
-                </td>
+                <th width="10"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th>
+                <th width="150">助学金类型</th>
+                <th width="80">助学金金额</th>
+                <th width="150">允许申请时间</th>
+                <th width="80">总名额(每班)</th>
+                <th width="50">操作</th>
             </tr>
-        </foreach>
-        </tbody>
-        <!--<tfoot>-->
-            <!--<th width="150">助学金类型</th>-->
-            <!--<th width="100">助学金金额</th>-->
-            <!--<th width="100">申请时间</th>-->
-            <!--<th width="80">状态</th>-->
-            <!--<th width="50">操作</th>-->
-        <!--</tfoot>-->
-    </table>
+            </thead>
+            <tbody>
+            <foreach name="data" item="vo">
+                <tr>
+                    <td><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$vo.type_id}"></td>
+                    <td>{$vo.type_name}</td>
+                    <td>{$vo.money}</td>
+                    <td>{$vo.start_time}至{$vo.end_time}</td>
+                    <td>{$vo.quota}</td>
+                    <td>
+                        <a href="{:U('Symsg/edit',array('id'=>$vo['type_id']))}" >编辑</a>|
+                        <a href="{:U('Symsg/delete',array('id'=>$vo['type_id']))}" class="js-ajax-delete">删除</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </form>
+
     <div class="pagination">{$page}</div>
 </div>
 <script src="__PUBLIC__/js/common.js"></script>
 <script>
     //取消申请操作
-    if ($('.rem_sy').length) {
+    if ($('.rem_sc').length) {
         Wind.use('artDialog', function () {
-            $('.rem_sy').on('click', function (e) {
+            $('.rem_sc').on('click', function (e) {
                 e.preventDefault();
                 var $_this = this,
                         $this = $($_this),
@@ -87,7 +82,7 @@
                     ok: function () {
                         $.getJSON(href).done(function (data) {
                             if (data.state === 'success') {
-                                console.log($(".rem_sy").attr('status'));
+                                console.log($(".rem_sc").attr('status'));
                                 if (data.referer) {
                                     location.href = data.referer;
                                 } else {

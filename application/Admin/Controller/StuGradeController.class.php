@@ -21,7 +21,7 @@ class StuGradeController extends AdminbaseController {
 
 
         $sel = $this->model->field('cmf_subject.subject_name,cmf_grade.grade,cmf_subject.score')
-            ->join('cmf_subject ON cmf_subject.subject_id = cmf_grade.subject_id')
+            ->join('cmf_subject on cmf_subject.subject_id = cmf_grade.subject_id')
             ->limit($page->firstRow , $page->listRows)
             ->where(array('cmf_grade.stu_id'=>$stu_id))
             ->select();

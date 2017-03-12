@@ -7,9 +7,9 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="{:U('ScApprove/index')}">奖学金审批中心</a></li>
+        <li class="active"><a href="{:U('SyApprove/index')}">助学金审批中心</a></li>
     </ul>
-    <form class="well form-search" method="post" action="{:U('ScApprove/index')}">
+    <form class="well form-search" method="post" action="{:U('SyApprove/index')}">
         院系:
         <input type="text" name="xi_name" style="width: 120px;" value="{:I('request.xi_name/s','')}" >
         专业:
@@ -20,10 +20,10 @@
         <input type="text" name="stu_no" style="width: 120px;" value="{:I('request.stu_no/s','')}" >
         学生姓名:
         <input type="text" name="stu_name" style="width: 80px;" value="{:I('request.stu_name/s','')}" >
-        奖学金类型:
+        助学金类型:
         <input type="text" name="type_name" style="width: 120px;" value="{:I('request.type_name/s','')}" >
         <input type="submit" class="btn btn-primary" value="搜索" />
-        <a class="btn btn-danger" href="{:U('ScApprove/index')}">清空</a>
+        <a class="btn btn-danger" href="{:U('SyApprove/index')}">清空</a>
     </form>
 
     <table class="table table-hover table-bordered table-list">
@@ -34,8 +34,8 @@
             <th width="20">班级</th>
             <th width="50">学生姓名</th>
             <th width="50">学号</th>
-            <th width="100">奖学金类型</th>
-            <th width="30">荣誉</th>
+            <th width="100">助学金类型</th>
+            <th width="30">家庭情况</th>
             <th width="50">操作</th>
         </tr>
         </thead>
@@ -48,17 +48,17 @@
                 <td>{$vo.stu_name}</td>
                 <td>{$vo.stu_no}</td>
                 <td>{$vo.type_name}</td>
-                <td><a href="{:U('ScApprove/check',array('id'=>$vo['id']))}">查看</a></td>
+                <td><a href="{:U('SyApprove/check',array('id'=>$vo['id']))}">查看</a></td>
                 <td>
-                    <a href="{:U('ScApprove/pass',array('id'=>$vo['id']))}" class="passbtn">通过</a>|
-                    <a href="{:U('ScApprove/rebut',array('id'=>$vo['id']))}" class="rebutbtn">驳回</a>
+                    <a href="{:U('SyApprove/pass',array('id'=>$vo['id']))}" class="passbtn">通过</a>|
+                    <a href="{:U('SyApprove/rebut',array('id'=>$vo['id']))}" class="rebutbtn">驳回</a>
                 </td>
             </tr>
         </foreach>
         </tbody>
         <!--<tfoot>-->
-            <!--<th width="150">奖学金类型</th>-->
-            <!--<th width="100">奖学金金额</th>-->
+            <!--<th width="150">助学金类型</th>-->
+            <!--<th width="100">助学金金额</th>-->
             <!--<th width="100">申请时间</th>-->
             <!--<th width="80">状态</th>-->
             <!--<th width="50">操作</th>-->

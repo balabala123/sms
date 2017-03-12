@@ -1,0 +1,41 @@
+<admintpl file="header" />
+
+<style>
+
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:U('ApApprove/index')}">加分项审批中心</a></li>
+        <li class="active"><a href="">详细信息</a></li>
+    </ul>
+
+    <div >
+        <table class="table table-hover table-bordered table-list" style="width:600px;">
+            <tr>
+                <td>开始时间</td>
+                <td>{$start_time}</td>
+            </tr>
+            <tr>
+                <td>结束时间</td>
+                <td>{$end_time}</td>
+            </tr>
+            <tr style="height:80px;">
+                <td>成果</td>
+                <td style="word-wrap:break-word;overflow:hidden;width: 450px;">{$add_res}</td>
+            </tr>
+            <tr style="height:80px;">
+                <td>备注</td>
+                <td style="word-wrap:break-word;width: 500px;">{$add_note}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="form-actions">
+        <a class="btn" href="{:U('ApApprove/index')}">返回</a>
+    </div>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

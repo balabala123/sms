@@ -23,10 +23,10 @@ class StuMessageController extends AdminbaseController {
                                  cmf_stu_message.stu_from,cmf_stu_message.stu_home,cmf_stu_message.stu_phone,
                                  cmf_stu_message.stu_mother_phone,cmf_stu_message.stu_father_phone,cmf_stu_message.stu_birthday,
                                  cmf_stu_message.stu_minzu,cmf_stu_message.stu_face')
-                        ->join('cmf_xi ON cmf_xi.xi_id = cmf_student.xi_id')
-                        ->join('cmf_depart ON cmf_depart.depart_id = cmf_student.depart_id')
-                        ->join('cmf_class ON cmf_class.class_id = cmf_student.class_id')
-                        ->join('cmf_stu_message ON cmf_stu_message.stu_id = cmf_student.stu_id')
+                        ->join('cmf_xi on cmf_xi.xi_id = cmf_student.xi_id')
+                        ->join('cmf_depart on cmf_depart.depart_id = cmf_student.depart_id')
+                        ->join('cmf_class on cmf_class.class_id = cmf_student.class_id')
+                        ->join('cmf_stu_message on cmf_stu_message.stu_id = cmf_student.stu_id')
                         ->where(array('cmf_student.stu_id'=>$stu_id))
                         ->find();
         if($data['stu_sex'] == 1){
