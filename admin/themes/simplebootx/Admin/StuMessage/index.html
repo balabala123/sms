@@ -19,53 +19,78 @@
     <ul class="nav nav-tabs">
         <li class="active"><a href="{:U('StuMessage/index')}">个人信息</a></li>
     </ul>
-    <table border="2" style="width:800px;height:480px;text-align: center;color: #000;margin-left: 100px;margin-top:20px;" >
+    <!--<table border="2" style="width:800px;height:480px;text-align: center;color: #000;margin-left: 100px;margin-top:20px;" >-->
+        <!--<tr>-->
+            <!--<td style="width:20px;" class="stu_msg">姓名</td> <td class="stu_con" style="width:150px;">{$data.stu_name}</td>-->
+            <!--<td style="width:20px;" class="stu_msg">性别</td> <td class="stu_con" style="width:200px;">{$data.stu_sex}</td>-->
+            <!--<td style="width:20px;" class="stu_msg">年龄</td> <td class="stu_con" style="width:180px;">{$data.stu_age}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td class="stu_msg">出生年月</td> <td class="stu_con">{$data.stu_birthday}</td>-->
+            <!--<td class="stu_msg">民族</td> <td class="stu_con">{$data.stu_minzu}</td>-->
+            <!--<td class="stu_msg">政治面貌</td> <td class="stu_con">{$data.stu_face}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td class="stu_msg">院系</td> <td class="stu_con">{$data.xi_name}</td>-->
+            <!--<td class="stu_msg">专业</td> <td  class="stu_con">{$data.depart_name}</td>-->
+            <!--<td class="stu_msg">所属班级</td > <td  class="stu_con">{$data.class_no}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td class="stu_msg">户口所在地</td> <td class="stu_con">{$data.stu_from}</td>-->
+            <!--<td class="stu_msg">手机</td> <td class="stu_con">{$data.stu_phone}</td>-->
+            <!--<td class="stu_msg">邮箱</td> <td class="stu_con">{$data.stu_email}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td width="150px;" class="stu_msg">家庭住址</td> <td colspan="5" class="stu_con">{$data.stu_home}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td colspan="7" style="background: lightgray;height:20px;"></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td width="150px;" class="stu_msg">家庭成员</td>-->
+            <!--<td width="150px;" class="stu_msg">姓名</td>-->
+            <!--<td width="100px;" class="stu_msg" colspan="2">工作单位</td>-->
+            <!--<td width="100px;" class="stu_msg">职务</td>-->
+            <!--<td width="100px;" class="stu_msg">联系电话</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td class="stu_con">父亲</td>-->
+            <!--<td class="stu_con">{$data.stu_father_name}</td>-->
+            <!--<td colspan="2">{$data.stu_father_job}</td>-->
+            <!--<td class="stu_con">{$data.stu_father_work}</td>-->
+            <!--<td class="stu_con">{$data.stu_father_phone}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td class="stu_con">母亲</td>-->
+            <!--<td class="stu_con">{$data.stu_mother_name}</td>-->
+            <!--<td colspan="2">{$data.stu_mother_job}</td>-->
+            <!--<td class="stu_con">{$data.stu_mother_work}</td>-->
+            <!--<td class="stu_con">{$data.stu_mother_phone}</td>-->
+        <!--</tr>-->
+    <!--</table>-->
+
+    <h3>个人信息展示：</h3>
+    <table border="1" style="width:600px;height:300px;text-align: center;color: #000;margin-top:20px;">
         <tr>
-            <td style="width:20px;" class="stu_msg">姓名</td> <td class="stu_con" style="width:150px;">{$data.stu_name}</td>
-            <td style="width:20px;" class="stu_msg">性别</td> <td class="stu_con" style="width:200px;">{$data.stu_sex}</td>
-            <td style="width:20px;" class="stu_msg">年龄</td> <td class="stu_con" style="width:180px;">{$data.stu_age}</td>
+            <td style="width:20px;" class="stu_msg">学号</td>
+            <td class="stu_con" style="width:150px;">{$data.stu_no}</td>
         </tr>
         <tr>
-            <td class="stu_msg">出生年月</td> <td class="stu_con">{$data.stu_birthday}</td>
-            <td class="stu_msg">民族</td> <td class="stu_con">{$data.stu_minzu}</td>
-            <td class="stu_msg">政治面貌</td> <td class="stu_con">{$data.stu_face}</td>
+            <td style="width:20px;" class="stu_msg">姓名</td>
+            <td class="stu_con" style="width:150px;">{$data.stu_name}</td>
         </tr>
         <tr>
-            <td class="stu_msg">院系</td> <td class="stu_con">{$data.xi_name}</td>
-            <td class="stu_msg">专业</td> <td  class="stu_con">{$data.depart_name}</td>
-            <td class="stu_msg">所属班级</td > <td  class="stu_con">{$data.class_no}</td>
+            <td class="stu_msg">院系</td>
+            <td class="stu_con">{$data.xi_name}</td>
+        </tr>
+
+        <tr>
+            <td class="stu_msg">专业</td>
+            <td  class="stu_con">{$data.depart_name}</td>
         </tr>
         <tr>
-            <td class="stu_msg">户口所在地</td> <td class="stu_con">{$data.stu_from}</td>
-            <td class="stu_msg">手机</td> <td class="stu_con">{$data.stu_phone}</td>
-            <td class="stu_msg">邮箱</td> <td class="stu_con">{$data.stu_email}</td>
-        </tr>
-        <tr>
-            <td width="150px;" class="stu_msg">家庭住址</td> <td colspan="5" class="stu_con">{$data.stu_home}</td>
-        </tr>
-        <tr>
-            <td colspan="7" style="background: lightgray;height:20px;"></td>
-        </tr>
-        <tr>
-            <td width="150px;" class="stu_msg">家庭成员</td>
-            <td width="150px;" class="stu_msg">姓名</td>
-            <td width="100px;" class="stu_msg" colspan="2">工作单位</td>
-            <td width="100px;" class="stu_msg">职务</td>
-            <td width="100px;" class="stu_msg">联系电话</td>
-        </tr>
-        <tr>
-            <td class="stu_con">父亲</td>
-            <td class="stu_con">{$data.stu_father_name}</td>
-            <td colspan="2">{$data.stu_father_job}</td>
-            <td class="stu_con">{$data.stu_father_work}</td>
-            <td class="stu_con">{$data.stu_father_phone}</td>
-        </tr>
-        <tr>
-            <td class="stu_con">母亲</td>
-            <td class="stu_con">{$data.stu_mother_name}</td>
-            <td colspan="2">{$data.stu_mother_job}</td>
-            <td class="stu_con">{$data.stu_mother_work}</td>
-            <td class="stu_con">{$data.stu_mother_phone}</td>
+            <td class="stu_msg">所属班级</td >
+            <td  class="stu_con">{$data.class_no}</td>
         </tr>
     </table>
 

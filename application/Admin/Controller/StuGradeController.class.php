@@ -13,7 +13,7 @@ class StuGradeController extends AdminbaseController {
     }
 
     public function index(){
-        $stu_id = $_COOKIE['stu_id'];
+        $stu_id = $_COOKIE['stu_id'] = 8;
         //分页
         $count=$this->model->where(array('stu_id'=>$stu_id))->count();
         $page = $this->page($count, 8);
