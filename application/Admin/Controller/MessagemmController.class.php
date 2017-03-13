@@ -19,6 +19,7 @@
             $this->ximdl = M('xi');
             $this->depmdl = M('depart');
             $this->classmdl = M('class');
+            $this->usermdl = M('users');
             $this->pageNum = 10;
         }
 
@@ -93,13 +94,12 @@
             //end
             if ($this->model->data($data)->add()){
                 $id = $this->model->where("ban_no='".$data['ban_no']."'")->field('ban_id')->find();
-                $user_logn = M('users');
-                $data_logn['user_login'] = $data['ban_no'];
+                $data_logn['user_login'] = $data['ban_name'];
                 $data_logn['rele_id'] = $id['ban_id'];
                 $data_logn['user_pass'] = sp_password($data['ban_no']);
                 $data_logn['user_email'] = '823650031@qq.com';
-                if($user_logn->data($data_logn)->add()) {
-                    $id = $user_logn->where("user_login='".$data_logn['user_login']."'")->field('id')->find();
+                if($this->usermdl->data($data_logn)->add()) {
+                    $id = $this->usermdl->where("user_login='".$data_logn['user_login']."'")->field('id')->find();
                     $role_mdl = M('role_user');
                     $data_role['role_id'] = 4;
                     $data_role['user_id'] = $id['id'];
@@ -197,8 +197,15 @@
             }else{
                 $data['ban_name'] = $ban_name;
             }
+            $mname = $this->model->getFieldByban_id($ban_id, 'ban_name');
             if($this->model->where('ban_id='.$ban_id)->save($data)){
-                $this->success('修改成功');
+                $where_u['user_login'] = $mname;
+                $where_u['rele_id'] = $ban_id;
+                if($this->usermdl->where($where_u)->save(array('user_login'=>$data['ban_name']))) {
+                    $this->success("修改成功");
+                }else{
+                    $this->error("修改用户失败");
+                }
             }else{
                 $this->error('修改失败');
             }

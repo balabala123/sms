@@ -19,6 +19,7 @@
             $this->ximdl = M('xi');
             $this->depmdl = M('depart');
             $this->classmdl = M('class');
+            $this->usermdl = M('users');
             $this->pageNum = 10;
         }
 
@@ -91,19 +92,12 @@
             //end
             if ($this->model->data($data)->add()){
                 $id = $this->model->where('stu_no='.$data['stu_no'])->field('stu_id')->find();
-                if($id['stu_id'] <= 9) {
-                    $logn = '0'.$id['stu_id'];
-                }else{
-                    $logn = $id['stu_id'];
-                }
-                $date = date('Y');
-                $user_logn = M('users');
-                $data_logn['user_login'] = $date.$logn;
+                $data_logn['user_login'] = $data['stu_name'];
                 $data_logn['rele_id'] = $id['stu_id'];
                 $data_logn['user_pass'] = $data['stu_pwd'];
                 $data_logn['user_email'] = '823650031@qq.com';
-                if($user_logn->data($data_logn)->add()) {
-                    $id = $user_logn->where('user_login='.$data_logn['user_login'])->field('id')->find();
+                if($this->usermdl->data($data_logn)->add()) {
+                    $id = $this->usermdl->where("user_login='".$data_logn['user_login']."'")->field('id')->find();
                     $role_mdl = M('role_user');
                     $data_role['role_id'] = 2;
                     $data_role['user_id'] = $id['id'];
@@ -214,12 +208,14 @@
                     //修改班级其他学生的学号
                     $where_no['stu_no'] = array('gt',$no);
                     $where_no['class_id'] = $mclass;
-                    $res = $this->model->where($where_no)->setDec('stu_no',1);
-                    if($res) {
-                        $this->success("修改成功", U('Stumm/add'));
-                    }else{
-                        $this->error("修改失败");
-                    }
+                    $this->model->where($where_no)->setDec('stu_no',1);
+                        $where_u['user_login'] = $mname;
+                        $where_u['rele_id'] = $stu_id;
+                        if($this->usermdl->where($where_u)->save(array('user_login'=>$stu_name))) {
+                            $this->success("修改成功", U('Stumm/add'));
+                        }else {
+                            $this->error("修改用户失败");
+                        }
                 } else {
                     $this->error("修改失败");
                 }
@@ -227,6 +223,13 @@
                 $data['stu_name'] = $stu_name;
                 $bool = $this->model->where('stu_id=' . $stu_id)->save($data);
                 if ($bool) {
+                    $where_u['user_login'] = $mname;
+                    $where_u['rele_id'] = $stu_id;
+                    if($this->usermdl->where($where_u)->save(array('user_login'=>$stu_name))) {
+                        $this->success("修改成功", U('Stumm/index'));
+                    }else{
+                        $this->error("修改用户失败");
+                    }
                     $this->success("修改成功", U('Stumm/index'));
                 } else {
                     $this->error("修改失败");

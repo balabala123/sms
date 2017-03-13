@@ -35,7 +35,8 @@ class PublicController extends AdminbaseController {
     
     public function logout(){
     	session('ADMIN_ID',null); 
-    	redirect(__ROOT__."/");
+    	//redirect(__ROOT__."/");
+		$this->login();
     }
     
     public function dologin(){
