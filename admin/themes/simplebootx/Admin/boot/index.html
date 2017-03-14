@@ -159,18 +159,18 @@ right: initial !important;}
 				</a>
 				<div class="pull-left nav_shortcuts" >
 					
-					<a class="btn btn-small btn-warning" href="__ROOT__/" title="{:L('WEBSITE_HOME_PAGE')}" target="_blank">
+					<a class="btn btn-small btn-warning" href="{:U('Index/index')}" title="{:L('WEBSITE_HOME_PAGE')}">
 						<i class="fa fa-home"></i>
 					</a>
 					
 					<if condition="sp_auth_check(sp_get_current_admin_id(),'portal/AdminTerm/index')">
-					<a class="btn btn-small btn-success" href="javascript:openapp('{:U('portal/AdminTerm/index')}','index_termlist','{:L('PORTAL_ADMINTERM_INDEX')}');" title="{:L('PORTAL_ADMINTERM_INDEX')}">
+					<a class="btn btn-small btn-success" href="javascript:openapp('{:U('Admin/User/userinfo')}','index_termlist','{:L('PORTAL_ADMINTERM_INDEX')}');" title="{:L('PORTAL_ADMINTERM_INDEX')}">
 						<i class="fa fa-th"></i>
 					</a>
 					</if>
 					
 					<if condition="sp_auth_check(sp_get_current_admin_id(),'portal/AdminPost/index')">
-					<a class="btn btn-small btn-info" href="javascript:openapp('{:U('portal/AdminPost/index')}','index_postlist','{:L('PORTAL_ADMINPOST_INDEX')}');" title="{:L('PORTAL_ADMINPOST_INDEX')}">
+					<a class="btn btn-small btn-info" href="javascript:openapp('{:U('Admin/setting/password')}','index_postlist','{:L('PORTAL_ADMINPOST_INDEX')}');" title="{:L('PORTAL_ADMINPOST_INDEX')}">
 						<i class="fa fa-pencil"></i>
 					</a>
 					</if>

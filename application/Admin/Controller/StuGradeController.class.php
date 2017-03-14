@@ -10,10 +10,14 @@ class StuGradeController extends AdminbaseController {
         parent::_initialize();
         $this->model = D('Grade');
         $this->params = I('params.');
+        $ID = $_SESSION['ADMIN_ID'];
+        $users = M('users');
+        $user_id = $users->where('id='.$ID)->field('rele_id')->find();
+        $this->id = $user_id['rele_id'];
     }
 
     public function index(){
-        $stu_id = $_COOKIE['stu_id'] = 8;
+        $stu_id = $this->id;
         //分页
         $count=$this->model->where(array('stu_id'=>$stu_id))->count();
         $page = $this->page($count, 8);

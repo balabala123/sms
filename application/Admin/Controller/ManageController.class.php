@@ -22,7 +22,6 @@
         }
 
         public function index() {
-            $this->id = 9;
             $data = $this->model->where('ban_id='.$this->id)->field('ban_name,ban_no,xi_id,class_id,depart_id')->find();
             $depart = $this->depmdl->where('depart_id='.$data['depart_id'])->field('depart_name')->find();
             $data['depart'] = $depart['depart_name'];

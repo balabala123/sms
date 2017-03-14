@@ -26,7 +26,7 @@ class AdminbaseController extends AppframeController {
 	    $this->load_app_admin_menu_lang();
 	    
 	    $session_admin_id=session('ADMIN_ID');
-	    
+
     	if(!empty($session_admin_id)){
     		$users_obj= M("Users");
     		$user=$users_obj->where(array('id'=>$session_admin_id))->find();

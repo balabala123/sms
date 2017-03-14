@@ -10,11 +10,15 @@ class StuMessageController extends AdminbaseController {
         parent::_initialize();
         $this->model = D('Stu_message');
         $this->params = I('params.');
+        $ID = $_SESSION['ADMIN_ID'];
+        $users = M('users');
+        $user_id = $users->where('id='.$ID)->field('rele_id')->find();
+        $this->id = $user_id['rele_id'];
     }
 
     public function index(){
 
-        $stu_id = $_COOKIE['stu_id'] = 8;
+        $stu_id = $this->id;
         $stu_msg = M("Student");
         $data = $stu_msg->field('cmf_student.stu_name,cmf_student.stu_no,cmf_xi.xi_name,cmf_depart.depart_name,cmf_class.class_no,
                                  cmf_stu_message.stu_age,cmf_stu_message.stu_email,cmf_stu_message.stu_father_name,

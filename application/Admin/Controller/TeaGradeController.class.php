@@ -27,7 +27,7 @@
             $users = M('users');
             $user_id = $users->where('id='.$ID)->field('rele_id')->find();
             $this->id = $user_id['rele_id'];
-            $this->id = 30;
+            $this->id = 41;
         }
 
         public function index() {
