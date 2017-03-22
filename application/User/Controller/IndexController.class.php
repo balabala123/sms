@@ -1,11 +1,11 @@
 <?php
 namespace User\Controller;
 
-use Common\Controller\HomebaseController;
+use Common\Controller\MemberbaseController;
 
-class IndexController extends HomebaseController {
+class IndexController extends MemberbaseController {
     
-    // 前台用户首页 (公开)
+
 	public function index() {
 	    
 		$id=I("get.id",0,'intval');
@@ -41,7 +41,7 @@ class IndexController extends HomebaseController {
     		echo uc_user_synlogout();
     	}
     	session("user",null);//只有前台用户退出
-    	redirect(__ROOT__."/");
+    	redirect(leuu('user/login/index'));
     }
 
 }

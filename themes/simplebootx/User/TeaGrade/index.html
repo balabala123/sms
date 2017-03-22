@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$site_name}</title>
+    <meta name="keywords" content="{$site_seo_keywords}" />
+    <meta name="description" content="{$site_seo_description}">
+    <meta name="author" content="ThinkCMF">
+    <tc_include file="Public:head" />
+    <style>
+        .control-label{
+            font-weight: bold;
+            float: left;
+            width: 70px;
+        }
+    </style>
+</head>
+<body class="body-white" id="top">
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="span3">
+                <tc_include file="Public:teanav"/>
+        </div>
+        <div class="span9">
+            <div class="tabs">
+                <ul class="nav nav-tabs">
+                    <li><a href="{:U('Center/index')}"><i class="fa fa-list-alt"></i>个人中心</a></li>
+                    <volist name="class" id="vo">
+                        <li <if condition="$class_id eq $vo['class_id']"> class="active"</if>> <a href="{:U('TeaGrade/index',array('id'=>$vo['class_id']))}">{$vo.class_no}</a></li>
+                    </volist>
+                </ul>
+                <div class="tab-content">
+                    <form  method="post" action="{:U('TeaGrade/grade')}">
+                        <button type="submit" class="btn js-ajax-submit">提交</button>
+                    <table class="table table-hover table-bordered table-list" style="width:120%;background-color: rgba(255,255,255,0.6)">
+                        <thead>
+                        <tr>
+                            <th>学生学号</th>
+                            <th>学生姓名</th>
+                            <th>成绩</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <foreach name="stu_list" item="vo">
+                            <tr>
+                                <td>{$vo.stu_no}</td>
+                                <td>{$vo.stu_name}</td>
+                                <td><input type="number" name="grade[]" value="{$vo.grade}" id="grade">
+                                    <input type="hidden" name="stu_id[]" value="{$vo.stu_id}" id="stu_id">
+                                    <input type="hidden" name="grade_id[]" value="{$vo.grade_id}">
+                                    <!-- <if condition="!empty($vo['grade_id'])">
+                                        <input type="hidden" name="grade_id[]" value="{$vo.grade_id}">
+                                    <else/>
+
+                                    </if>-->
+                                </td>
+                            </tr>
+                        </foreach>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn js-ajax-submit">提交</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <tc_include file="Public:footer" />
+
+</div>
+<!-- /container -->
+
+<tc_include file="Public:scripts" />
+</body>
+</html>

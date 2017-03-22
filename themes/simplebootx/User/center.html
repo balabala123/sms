@@ -20,12 +20,18 @@
 		<div class="container tc-main">
                 <div class="row">
                     <div class="span3">
-	                    <tc_include file="Public:usernav"/>
+						<if condition="$stumsg">
+	                    	<tc_include file="Public:usernav"/>
+						<elseif condition="$teamsg"/>
+							<tc_include file="Public:teanav"/>
+						<elseif condition="$banmsg"/>
+							<tc_include file="Public:bannav"/>
+						</if>
                     </div>
                     <div class="span9">
                            <div class="tabs">
                                <ul class="nav nav-tabs">
-                                   <li class="active"><a href="#one" data-toggle="tab"><i class="fa fa-list-alt"></i>个人中心</a></li>
+                                   <li class="active"><a href="{:U('center/index')}" data-toggle="tab"><i class="fa fa-list-alt"></i>个人中心</a></li>
                                </ul>
                                <div class="tab-content">
                                    <div class="tab-pane active" id="one">
@@ -37,50 +43,111 @@
 								            <img src="{:sp_get_user_avatar_url($avatar)}" class="headicon"/>
 								            </if>
 								          </a>
-										  </div>      
+										  </div>
+									   <if condition="$stumsg">
 										  <div class="span3">
                                    			<div class="control-group">
-                                   				<label class="control-label" for="input-user_nicename">昵称</label>
+                                   				<label class="control-label" for="input-user_nicename">姓名</label>
                                    				<div class="controls">
-                                   					{$user_nicename|default='未填写'}
+                                   					{$stumsg['stu_name']}
                                    				</div>
                                    			</div>
                                    			<div class="control-group">
-                                   				<label class="control-label" for="input-sex">性别</label>
+                                   				<label class="control-label" for="input-sex">学号</label>
+												<div class="controls">
+													{$stumsg['stu_no']}
+												</div>
+                                   			</div>
+                                   			<div class="control-group">
+                                   				<label class="control-label" for="input-birthday">班级</label>
                                    				<div class="controls">
-                                   				<php>
-                                   				$sexs=array("0"=>"保密","1"=>"程序猿","2"=>"程序媛");
-                                   				
-                                   				</php>
-                                   					{$sexs[$sex]}
+                                   					{$stumsg['class_no']}
                                    				</div>
                                    			</div>
                                    			<div class="control-group">
-                                   				<label class="control-label" for="input-birthday">生日</label>
+                                   				<label class="control-label" for="input-user_url">专业</label>
                                    				<div class="controls">
-                                   					{$birthday|default='未填写'}
+                                   					{$stumsg['depart']}
                                    				</div>
                                    			</div>
                                    			<div class="control-group">
-                                   				<label class="control-label" for="input-user_url">个人网址</label>
+                                   				<label class="control-label" for="input-signature">院系</label>
                                    				<div class="controls">
-                                   					{$user_url|default='未填写'}
+                                   					{$stumsg['xi']}
                                    				</div>
                                    			</div>
                                    			<div class="control-group">
-                                   				<label class="control-label" for="input-signature">个性签名</label>
-                                   				<div class="controls">
-                                   					{$signature|default='未填写'}
-                                   				</div>
-                                   			</div>
-                                   			<div class="control-group">
-                                   				<div class="controls">
-                                   					<a href="{:U('user/profile/edit')}" type="submit" class="btn">编辑</a>
-                                   				</div>
+												<label class="control-label" for="input-signature">班主任</label>
+												<div class="controls">
+													{$stumsg['ban_name']}
+												</div>
                                    			</div>
                                    		</div>
+										<elseif condition="$teamsg"/>
+										   <div class="span3">
+											   <div class="control-group">
+												   <label class="control-label" for="input-user_nicename">姓名</label>
+												   <div class="controls">
+													   {$teamsg['teacher_name']}
+												   </div>
+											   </div>
+											   <div class="control-group">
+												   <label class="control-label" for="input-sex">工号</label>
+												   <div class="controls">
+													   {$teamsg['teacher_no']}
+												   </div>
+											   </div>
+											   <div class="control-group">
+												   <label class="control-label" for="input-birthday">教授课程</label>
+												   <div class="controls">
+												   		{$teamsg['subject']}
+											   		</div>
+											   </div>
+											   <div class="control-group">
+												   <label class="control-label" for="input-user_url">教授班级</label>
+												   <div class="controls">
+													   <volist name="class_no" id="vo">
+														   <a href="{:U('TeaGrade/index',array('id'=>$vo['class_id']))}">{$vo.class_no}</a>&nbsp;&nbsp;
+													   </volist>
+												   </div>
+											   </div>
+										   </div>
+										<elseif condition="$banmsg"/>
+										   <div class="span3">
+											   <div class="control-group">
+												   <label class="control-label" for="input-user_nicename">姓名</label>
+												   <div class="controls">
+													   {$banmsg['ban_name']}
+												   </div>
+											   </div>
+											   <div class="control-group">
+												   <label class="control-label" for="input-sex">工号</label>
+												   <div class="controls">
+													   {$banmsg['ban_no']}
+												   </div>
+											   </div>
+											   <div class="control-group">
+												   <label class="control-label" for="input-birthday">所属院系</label>
+												   <div class="controls">
+													   {$banmsg['xi']}
+												   </div>
+											   </div>
+											   <div class="control-group">
+												   <label class="control-label" for="input-user_url">所属专业</label>
+												   <div class="controls">
+													   {$banmsg['depart']}
+												   </div>
+											   </div>
+											   <div class="control-group">
+												   <label class="control-label" for="input-signature">管理班级</label>
+												   <div class="controls">
+													   {$banmsg['class_no']}
+												   </div>
+											   </div>
+										   </div>
+										</if>
                                    </div>
-                               </div>							
+                               </div>
                            </div>
                     </div>
                 </div>

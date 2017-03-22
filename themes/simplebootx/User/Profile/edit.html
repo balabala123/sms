@@ -13,7 +13,13 @@
 		<div class="container tc-main">
                 <div class="row">
                     <div class="span3">
-	                    <tc_include file="Public:usernav"/>
+						<if condition="$role eq 1">
+							<tc_include file="Public:usernav"/>
+						<elseif condition="$role eq 2"/>
+							<tc_include file="Public:teanav"/>
+						<elseif condition="$role eq 3"/>
+							<tc_include file="Public:bannav"/>
+						</if>
                     </div>
                     <div class="span9">
                            <div class="tabs">
@@ -47,12 +53,6 @@
                                    				<label class="control-label" for="input-birthday">生日</label>
                                    				<div class="controls">
                                    					<input class="js-date" type="text" id="input-birthday" placeholder="2013-01-04" name="birthday" value="{$birthday}">
-                                   				</div>
-                                   			</div>
-                                   			<div class="control-group">
-                                   				<label class="control-label" for="input-user_url">个人网址</label>
-                                   				<div class="controls">
-                                   					<input type="text" id="input-user_url" placeholder="http://thinkcmf.com" name="user_url" value="{$user_url}">
                                    				</div>
                                    			</div>
                                    			<div class="control-group">

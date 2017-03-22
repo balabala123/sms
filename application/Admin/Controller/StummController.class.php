@@ -124,7 +124,6 @@
             } elseif(is_numeric($id)) {
                 $where['stu_id'] = $id;
             }
-
             $where || $this->error(L('NO_DATA'));
             $no = $this->model->where($where)->field('stu_no,class_id')->select();
             $res = $this->model->where($where)->delete();

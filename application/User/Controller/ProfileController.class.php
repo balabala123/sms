@@ -7,10 +7,24 @@ class ProfileController extends MemberbaseController {
 	
 	function _initialize(){
 		parent::_initialize();
+		$message = $this->user;
+		$rolemdl = M('role_user');
+		$this->role = $rolemdl->where('user_id='.$message['id'])->getField('role_id');
 	}
 	
     // 编辑用户资料
 	public function edit() {
+		switch($this->role) {
+			case 2:
+				$this->assign('role', 1);
+				break;
+			case 3:
+				$this->assign('role', 2);
+				break;
+			case 4:
+				$this->assign('role', 3);
+				break;
+		}
 		$this->assign($this->user);
     	$this->display();
     }
@@ -36,6 +50,17 @@ class ProfileController extends MemberbaseController {
     
     // 个人中心修改密码
     public function password() {
+		switch($this->role) {
+			case 2:
+				$this->assign('role', 1);
+				break;
+			case 3:
+				$this->assign('role', 2);
+				break;
+			case 4:
+				$this->assign('role', 3);
+				break;
+		}
 		$this->assign($this->user);
     	$this->display();
     }
@@ -95,6 +120,17 @@ class ProfileController extends MemberbaseController {
     
     // 用户头像编辑
     public function avatar(){
+		switch($this->role) {
+			case 2:
+				$this->assign('role', 1);
+				break;
+			case 3:
+				$this->assign('role', 2);
+				break;
+			case 4:
+				$this->assign('role', 3);
+				break;
+		}
 		$this->assign($this->user);
     	$this->display();
     }

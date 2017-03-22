@@ -1,9 +1,9 @@
 <?php
-    namespace Admin\Controller;
+    namespace User\Controller;
 
-    use Common\Controller\AdminbaseController;
+    use Common\Controller\MemberbaseController;
 
-    class TeaGradeController extends AdminbaseController
+    class TeaGradeController extends MemberbaseController
     {
 
         // 参数
@@ -23,11 +23,8 @@
             $this->classmdl = M('class');
             $this->grademdl = M('grade');
             $this->pageNum = 1;
-            $ID = $_SESSION['ADMIN_ID'];
-            $users = M('users');
-            $user_id = $users->where('id='.$ID)->field('rele_id')->find();
-            $this->id = $user_id['rele_id'];
-            $this->id = 41;
+            $message = $this->user;
+            $this->id = $message['rele_id'];
         }
 
         public function index() {
