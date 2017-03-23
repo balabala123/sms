@@ -1,9 +1,10 @@
 @CHARSET "UTF-8";
 body{padding-top: 70px;}
-body.body-white1{ background-image:url(slippry/assets/img/5.jpg);}
-body.body-white{ background: -webkit-linear-gradient(top,#80c9ff,white);}
-body.body-white1{ background-size:100% 700px;}
-body.body-white{ background-size:100% 700px;}
+body.body-white1{ background-image:url(slippry/assets/img/111.png);}
+/*body.body-white{ background: -webkit-linear-gradient(top,rgba(21, 96, 154,0.8),lightblue);}*/
+body.body-white{ background: white}
+body.body-white1{ background-size:100% 760px;}
+body.body-white{ background-size:100% 750px;}
 /*body.body-white{ background-color: #0f3253;}*/
 .navbar-fixed-top, .navbar-fixed-bottom {
 position: fixed;
