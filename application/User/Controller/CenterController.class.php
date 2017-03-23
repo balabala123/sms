@@ -19,9 +19,6 @@ class CenterController extends MemberbaseController {
 	
     // 会员中心首页
 	public function index() {
-		/*echo "<pre>";
-		print_r($this->user);
-		exit;*/
 		$message = $this->user;
 		$role = $this->rolemdl->where('user_id='.$message['id'])->getField('role_id');
 		switch($role){

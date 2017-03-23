@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$site_name}</title>
+    <meta name="keywords" content="{$site_seo_keywords}" />
+    <meta name="description" content="{$site_seo_description}">
+    <meta name="author" content="ThinkCMF">
+    <tc_include file="Public:head" />
+    <style>
+        .control-label{
+            font-weight: bold;
+            float: left;
+            width: 70px;
+        }
+    </style>
+</head>
+<body class="body-white" id="top">
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="span3">
+                <tc_include file="Public:bannav"/>
+        </div>
+        <div class="span9">
+            <div class="tabs">
+                <ul class="nav nav-tabs">
+                    <li><a href="{:U('Center/index')}"><i class="fa fa-list-alt"></i>个人中心</a></li>
+                    <li class="active"><a href="{:U('Ban/index')}"><i class="fa fa-list-alt"></i>学生成绩信息</a></li>
+                </ul>
+                <div class="tab-content">
+                    <table class="table table-hover table-bordered table-list" style="width:120%;background-color: rgba(255,255,255,0.6)">
+                        <thead>
+                        <tr>
+                            <th>学生学号</th>
+                            <th>学生姓名</th>
+                            <foreach name="sub_list" item="item">
+                                <th>{$item}</th>
+                            </foreach>
+                            <th>总分</th>
+                            <th>排名</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="data" id="vo" empty="缺考">
+                                <tr>
+                                    <td>{$vo.no}</td>
+                                    <td>{$vo.name}</td>
+                                    <foreach name="sub_list" item="item">
+                                     <td>{$vo.$item}</td>
+                                    </foreach>
+                                    <td>{$vo.sum}</td>
+                                    <td>{$i}</td>
+                                </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <tc_include file="Public:footer" />
+
+</div>
+<!-- /container -->
+
+<tc_include file="Public:scripts" />
+</body>
+</html>
