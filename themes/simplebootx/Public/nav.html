@@ -9,9 +9,9 @@
        </a>
        <a class="brand" href="__ROOT__/"><span style="color: white;font-size: 30px">欢迎进入学生成绩管理系统</span></a>
        <div class="nav-collapse collapse" id="main-menu">
-		   <a href='#'  class='dropdown-toggle' data-toggle='dropdown'><font style="margin-left: 400px" color="#f0f8ff">首页</font><b class='caret'></b></a>
-		   <a href='#'  class='dropdown-toggle' data-toggle='dropdown'><font color="#f0f8ff"> 个人中心</font><b class='caret'></b></a>
-       <!--	<?php
+		 <!--  <a href='#'  class='dropdown-toggle' data-toggle='dropdown'><font style="margin-left: 400px" color="#f0f8ff">首页</font><b class='caret'></b></a>
+		   <a href='#'  class='dropdown-toggle' data-toggle='dropdown'><font color="#f0f8ff"> 个人中心</font><b class='caret'></b></a>-->
+       	<?php
 			$effected_id="main-menu";
 		  	$filetpl="<a href='\$href' target='\$target'>\$label</a>";
 		  	$foldertpl="<a href='\$href' target='\$target' class='dropdown-toggle' data-toggle='dropdown'>\$label <b class='caret'></b></a>";
@@ -22,7 +22,6 @@
 		  	$dropdown='dropdown';
 		  	echo sp_get_menu("main",$effected_id,$filetpl,$foldertpl,$ul_class,$li_class,$style,$showlevel,$dropdown);
 		?>
--->
 		<ul class="nav pull-right" id="main-menu-user">
 			<!-- <li class="user login" style="margin-left: 5px;">
 	            <a class="dropdown-toggle user notifactions" href="{:U('user/notification/index')}">

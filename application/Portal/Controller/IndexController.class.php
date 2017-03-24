@@ -24,11 +24,11 @@
 // | Author: Dean <zxxjjforever@163.com>
 // +----------------------------------------------------------------------
 namespace Portal\Controller;
-use Common\Controller\HomebaseController; 
+use Common\Controller\MemberbaseController;
 /**
  * 首页
  */
-class IndexController extends HomebaseController {
+class IndexController extends MemberbaseController {
 	
     //首页 小夏是老猫除外最帅的男人了
 	public function index() {

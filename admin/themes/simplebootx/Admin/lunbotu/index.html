@@ -18,8 +18,12 @@
             margin-left: 10px;
         }
         #d2{
-            margin-top:50px;
-            margin-left: 500px;
+            margin-top: -200px;
+            margin-left: 800px;
+        }
+        .adds,.dels:hover
+        {
+            cursor:pointer;
         }
     </style>
     <div id="d1">
@@ -38,8 +42,8 @@
         <form action="{:U('Lunbotu/add')}" method="post" enctype="multipart/form-data">
             <div id="add_img">
                 <div class="add">
-                    <a href="javascript:void(0)" onclick="add()">添加图片</a>
-                    <a href="javascript:void(0)" onclick="del()">取消添加</a><br>
+                    <a class="adds">添加图片</a>
+                    <a class="dels" style="display: none">取消添加</a><br>
                     <input type="file" name="image[]" required>
                 </div>
             </div>
@@ -56,20 +60,13 @@
             event.preventDefault();
         };
 
-        add = function() {
-            //点击add，增加一行
-            var newTr = $(".add:first").clone(true);
-            $("#add_img").append(newTr);
-        }
-        del = function() {
-            // alert($(".add").length);
-            if ($(".add").length != 1){
-                alert( $(this).parent());
-                $(this).parent().remove();
-            }
-        }
+        $(".adds").on("click", function(){
+            var div1=$(".add:first").clone(true);
+            div1.find(".dels").css("display","inline");
+            $('#add_img').append(div1);
+        });
+        $(".dels").on("click", function(){
+            this.parentNode.remove();
+        });
 
-        delet = function() {
-            alert($(".li").val());
-        }
     </script>
