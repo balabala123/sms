@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$site_name}</title>
+    <meta name="keywords" content="{$site_seo_keywords}" />
+    <meta name="description" content="{$site_seo_description}">
+    <meta name="author" content="ThinkCMF">
+    <tc_include file="Public:head" />
+</head>
+<body class="body-white" id="top">
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="span3">
+            <if condition="$role eq 1">
+                <tc_include file="Public:usernav"/>
+                <elseif condition="$role eq 2"/>
+                <tc_include file="Public:teanav"/>
+                <elseif condition="$role eq 3"/>
+                <tc_include file="Public:bannav"/>
+            </if>
+        </div>
+        <div class="span9">
+            <div class="tabs">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="{:U('user/StuSc/index')}" data-toggle="tab"><i class="fa fa-list-alt"></i>奖学金申请记录</a></li>
+                    <li><a href="{:U('user/StuSc/add')}" data-toggle="tab"><i class="fa fa-list-alt"></i>申请</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" >
+                        <form method="post" class="js-ajax-form" action="{:U('StuSc/add_post')}">
+                            <table   class="table table-hover table-bordered table-list">
+                                <tr>
+                                    <td class="thtd">奖学金类型</td>
+                                    <td>
+                                        <select name="type_name" style="color: black;width:300px;">
+                                            <option>请选择</option>
+                                            <foreach name="type" item="vo">
+                                                <if condition="$vo['sheng'] eq 0">
+                                                    <option disabled>{$vo.type_name}(还有{$vo.sheng}个名额)</option>
+                                                    <else />
+                                                    <option>{$vo.type_name}(还有{$vo.sheng}个名额)</option>
+                                                </if>
+
+                                            </foreach>
+                                            <!--<option>其他(请在备注中说明)</option>-->
+                                        </select>
+                                        <span class="form-required">*</span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="thtd">个人荣誉</td>
+                                    <td>
+                                        <textarea  name="sc_note" style="height:200px;width:500px;"></textarea>
+                                        <span class="form-required">*</span>
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary js-ajax-submit delt">提交</button>
+                                <a class="btn" href="{:U('StuSc/index')}">返回</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <tc_include file="Public:footer" />
+
+</div>
+<!-- /container -->
+
+<tc_include file="Public:scripts" />
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.page.js" ></script>
+</body>
+</html>

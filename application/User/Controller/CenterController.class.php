@@ -52,7 +52,5 @@ class CenterController extends MemberbaseController {
     	$this->display(':center');
     }
 
-	public function grade() {
-		echo '11111';
-	}
+
 }

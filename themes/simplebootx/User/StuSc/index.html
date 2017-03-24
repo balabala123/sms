@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$site_name}</title>
+    <meta name="keywords" content="{$site_seo_keywords}" />
+    <meta name="description" content="{$site_seo_description}">
+    <meta name="author" content="ThinkCMF">
+    <tc_include file="Public:head" />
+</head>
+<body class="body-white" id="top">
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="span3">
+            <if condition="$role eq 1">
+                <tc_include file="Public:usernav"/>
+                <elseif condition="$role eq 2"/>
+                <tc_include file="Public:teanav"/>
+                <elseif condition="$role eq 3"/>
+                <tc_include file="Public:bannav"/>
+            </if>
+        </div>
+        <div class="span9">
+            <div class="tabs">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="{:U('StuSc/index')}" data-toggle="tab"><i class="fa fa-list-alt"></i>奖学金申请记录</a></li>
+                    <li><a href="{:U('StuSc/add')}" data-toggle="tab"><i class="fa fa-list-alt"></i>申请</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="one">
+                        <form class="well form-search" method="post" action="{:U('StuSc/index')}">
+                            奖学金类型:
+                            <input type="text" name="type_name" style="width: 120px;" value="{:I('request.type_name/s','')}" >
+                            <input type="submit" class="btn btn-primary" value="搜索" />
+                            <a class="btn btn-danger" href="{:U('StuSc/index')}">清空</a>
+                        </form>
+                        <table class="table table-hover table-bordered table-list">
+                            <thead>
+                            <tr>
+                                <th width="150">奖学金类型</th>
+                                <th width="100">奖学金金额</th>
+                                <th width="120" style="text-align: center;">申请时间</th>
+                                <th width="100" style="text-align: center;">状态</th>
+                                <th width="80" >操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <foreach name="data" item="vo">
+                                <tr>
+                                    <td>{$vo.type_name}</td>
+                                    <td>{$vo.money}</td>
+                                    <td  style="text-align: center;">{$vo.create_time}</td>
+                                    <if condition="$vo['status'] eq '申请中'">
+                                        <td style="color:black;font-weight: bold;font-size: 13px;text-align: center;">{$vo.status}</td>
+                                        <elseif condition="$vo['status'] eq '审批通过'" />
+                                        <td style="color:green;font-weight: bold;font-size: 13px;text-align: center;">{$vo.status}</td>
+                                        <elseif condition="$vo['status'] eq '审批拒绝'" />
+                                        <td style="color:red;font-weight: bold;font-size: 13px;text-align: center;">{$vo.status}</td>
+                                        <elseif condition="$vo['status'] eq '已取消'" />
+                                        <td style="color:orange;font-weight: bold;font-size: 13px;text-align: center;">{$vo.status}</td>
+                                    </if>
+                                    <td>
+                                        <if condition="$vo['status'] neq '已取消'">
+                                            <a href="{:U('User/StuSc/remove_add',array('id'=>$vo['id']))}" class="rem_sc">取消申请</a>
+                                        </if>
+
+                                    </td>
+                                </tr>
+                            </foreach>
+                            </tbody>
+                        </table>
+                            <div class="paging-content">
+                                <div id="address-paging" class="tcdPageCode"></div>
+                                <div id="address-paging-select" class="tcdPageCode"></div>
+                            </div>
+                    </div>
+
+                    <div class="tab-pane active" id="two">
+                        <form method="post" class="js-ajax-form" action="{:U('StuSc/add_post')}">
+                            <table   class="table table-hover table-bordered table-list">
+                                <tr>
+                                    <td class="thtd">奖学金类型</td>
+                                    <td>
+                                        <select name="type_name" style="color: black;width:300px;">
+                                            <option>请选择</option>
+                                            <foreach name="type" item="vo">
+                                                <if condition="$vo['sheng'] eq 0">
+                                                    <option disabled>{$vo.type_name}(还有{$vo.sheng}个名额)</option>
+                                                    <else />
+                                                    <option>{$vo.type_name}(还有{$vo.sheng}个名额)</option>
+                                                </if>
+
+                                            </foreach>
+                                            <!--<option>其他(请在备注中说明)</option>-->
+                                        </select>
+                                        <span class="form-required">*</span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="thtd">个人荣誉</td>
+                                    <td>
+                                        <textarea  name="sc_note" style="height:200px;width:500px;"></textarea>
+                                        <span class="form-required">*</span>
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary js-ajax-submit delt">提交</button>
+                                <a class="btn" href="{:U('StuSc/index')}">返回</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <tc_include file="Public:footer" />
+
+</div>
+<!-- /container -->
+
+<tc_include file="Public:scripts" />
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+    //取消申请操作
+    if ($('.rem_sc').length) {
+        Wind.use('artDialog', function () {
+            $('.rem_sc').on('click', function (e) {
+                e.preventDefault();
+                var $_this = this,
+                        $this = $($_this),
+                        href = $this.data('href'),
+                        msg = $this.data('msg');
+                href = href ? href : $this.attr('href');
+                var  status = $(this).attr('status');
+
+                art.dialog({
+                    title: false,
+                    icon: 'question',
+                    content: msg ? msg : '确定要取消吗？',
+                    follow: $_this,
+                    close: function () {
+                        $_this.focus();; //关闭时让触发弹窗的元素获取焦点
+                        return true;
+                    },
+                    okVal: "确定",
+                    ok: function () {
+                        $.getJSON(href).done(function (data) {
+                            if (data.state === 'success') {
+                                console.log($(".rem_sc").attr('status'));
+                                if (data.referer) {
+                                    location.href = data.referer;
+                                } else {
+                                    reloadPage(window);
+                                }
+
+                            } else if (data.state === 'fail') {
+                                //art.dialog.alert(data.info);
+                                //alert(data.info);//暂时处理方案
+                                art.dialog({
+                                    content: data.info,
+                                    icon: 'warning',
+                                    ok: function () {
+                                        this.title(data.info);
+                                        return true;
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    cancelVal: '关闭',
+                    cancel: true
+                });
+
+
+            });
+
+        });
+    }
+
+</script>
+</body>
+</html>
