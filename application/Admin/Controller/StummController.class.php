@@ -94,6 +94,7 @@
                 $id = $this->model->where('stu_no='.$data['stu_no'])->field('stu_id')->find();
                 $data_logn['user_login'] = $data['stu_name'];
                 $data_logn['rele_id'] = $id['stu_id'];
+                $data_logn['user_type'] = 2;
                 $data_logn['user_pass'] = $data['stu_pwd'];
                 $data_logn['user_email'] = '823650031@qq.com';
                 if($this->usermdl->data($data_logn)->add()) {

@@ -98,6 +98,7 @@
                 $data_logn['rele_id'] = $id['ban_id'];
                 $data_logn['user_pass'] = sp_password($data['ban_no']);
                 $data_logn['user_email'] = '823650031@qq.com';
+                $data_logn['user_type'] = 2;
                 if($this->usermdl->data($data_logn)->add()) {
                     $id = $this->usermdl->where("user_login='".$data_logn['user_login']."'")->field('id')->find();
                     $role_mdl = M('role_user');
